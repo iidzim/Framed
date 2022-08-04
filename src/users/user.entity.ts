@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "t
 import * as bcrypt from "bcrypt";
 import { UserStatus } from "./UserStatus.enum";
 import { Follower } from "../followers/follower.entity";
-import { Post } from "../post/post.entity";
+import { post } from "../post/post.entity";
 
 @Entity('profile')
 export class Profile extends BaseEntity{
@@ -46,11 +46,11 @@ export class Profile extends BaseEntity{
 	senders: Follower[];
 
 	@OneToMany(
-		() => Post,
+		() => post,
 		post => post.createdBy,
 		{ eager: true }
 	)
-	posts: Post[];
+	posts: post[];
 
 
 	async validatePassword(password: string): Promise<boolean> {

@@ -1,8 +1,9 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "../users/user.entity";
+import { PostType } from "./post_type.enum";
 
 @Entity('post')
-export class Post extends BaseEntity {
+export class post extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -10,17 +11,20 @@ export class Post extends BaseEntity {
     @Column()
     content: string;
 
+    @Column()
+    type: PostType;
+
     @Column({ nullable: true, length: 500 })
     description: string;
 
     @ManyToOne(type => Profile, user => user.posts)
     createdBy: Profile;
 
-    @Column()
+    @CreateDateColumn()
     createdAt: Date;
 
     @Column()
-    catagory: string;
+    category: string;
 
     @Column()
     likes: number;

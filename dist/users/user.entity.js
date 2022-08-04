@@ -67,7 +67,7 @@ __decorate([
     __metadata("design:type", Array)
 ], Profile.prototype, "senders", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => post_entity_1.Post, post => post.createdBy, { eager: true }),
+    (0, typeorm_1.OneToMany)(() => post_entity_1.post, post => post.createdBy, { eager: true }),
     __metadata("design:type", Array)
 ], Profile.prototype, "posts", void 0);
 Profile = __decorate([

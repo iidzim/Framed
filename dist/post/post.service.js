@@ -15,12 +15,54 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const category_enum_1 = require("./category.enum");
 const post_repository_1 = require("./post.repository");
+const post_type_enum_1 = require("./post_type.enum");
 let PostService = class PostService {
     constructor(postRepository) {
         this.postRepository = postRepository;
     }
+    async getPosts() {
+        return await this.postRepository.find();
+    }
+    async getPostByCategory(category) {
+        return await this.postRepository.find({ where: { category: category } });
+    }
+    async getUserPosts(user) {
+        return await this.postRepository.find({ where: { createdBy: user } });
+    }
+    async getPostById(post_id) {
+        return await this.postRepository.findOne({ where: { id: post_id } });
+    }
+    async createPost(req, content, type, description, category) {
+        return await this.postRepository.createPost(req.user, content, type, description, category);
+    }
+    async editPost(req, post_id, description) {
+        return await this.postRepository.editPost(req.user, post_id, description);
+    }
+    async deletePost(req, post_id) {
+        const owner = req.user;
+        await this.postRepository.delete({ id: post_id, createdBy: owner });
+    }
 };
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String, String, String]),
+    __metadata("design:returntype", Promise)
+], PostService.prototype, "createPost", null);
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number, String]),
+    __metadata("design:returntype", Promise)
+], PostService.prototype, "editPost", null);
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number]),
+    __metadata("design:returntype", Promise)
+], PostService.prototype, "deletePost", null);
 PostService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(post_repository_1.PostRepository)),

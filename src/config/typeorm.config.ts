@@ -1,6 +1,6 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { Follower } from "../followers/follower.entity";
-import { Post } from "../post/post.entity";
+import { post } from "../post/post.entity";
 import { Profile } from "../users/user.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
@@ -12,7 +12,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     database: 'test_db',
     entities: [
         Profile,
-        Post,
+        post,
         Follower,
     ],
     synchronize: true,

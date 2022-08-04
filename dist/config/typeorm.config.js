@@ -13,7 +13,7 @@ exports.typeOrmConfig = {
     database: 'test_db',
     entities: [
         user_entity_1.Profile,
-        post_entity_1.Post,
+        post_entity_1.post,
         follower_entity_1.Follower,
     ],
     synchronize: true,

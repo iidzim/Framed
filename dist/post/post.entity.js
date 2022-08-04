@@ -9,41 +9,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = void 0;
+exports.post = void 0;
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("../users/user.entity");
-let Post = class Post extends typeorm_1.BaseEntity {
+const post_type_enum_1 = require("./post_type.enum");
+let post = class post extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Post.prototype, "id", void 0);
+], post.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Post.prototype, "content", void 0);
+], post.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], post.prototype, "type", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true, length: 500 }),
     __metadata("design:type", String)
-], Post.prototype, "description", void 0);
+], post.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(type => user_entity_1.Profile, user => user.posts),
     __metadata("design:type", user_entity_1.Profile)
-], Post.prototype, "createdBy", void 0);
+], post.prototype, "createdBy", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], Post.prototype, "createdAt", void 0);
+], post.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Post.prototype, "catagory", void 0);
+], post.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Post.prototype, "likes", void 0);
-Post = __decorate([
+], post.prototype, "likes", void 0);
+post = __decorate([
     (0, typeorm_1.Entity)('post')
-], Post);
-exports.Post = Post;
+], post);
+exports.post = post;
 //# sourceMappingURL=post.entity.js.map

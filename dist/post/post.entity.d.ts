@@ -1,11 +1,13 @@
 import { BaseEntity } from "typeorm";
 import { Profile } from "../users/user.entity";
-export declare class Post extends BaseEntity {
+import { PostType } from "./post_type.enum";
+export declare class post extends BaseEntity {
     id: number;
     content: string;
+    type: PostType;
     description: string;
     createdBy: Profile;
     createdAt: Date;
-    catagory: string;
+    category: string;
     likes: number;
 }
