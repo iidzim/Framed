@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "../users/user.entity";
 
-@Entity('Post')
+@Entity('post')
 export class Post extends BaseEntity {
 
     @PrimaryGeneratedColumn()

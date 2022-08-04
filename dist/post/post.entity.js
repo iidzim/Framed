@@ -43,7 +43,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Post.prototype, "likes", void 0);
 Post = __decorate([
-    (0, typeorm_1.Entity)('Post')
+    (0, typeorm_1.Entity)('post')
 ], Post);
 exports.Post = Post;
 //# sourceMappingURL=post.entity.js.map

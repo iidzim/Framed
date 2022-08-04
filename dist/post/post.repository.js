@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostRepository = void 0;
 const typeorm_1 = require("typeorm");
 const post_entity_1 = require("./post.entity");
-let PostRepository = class PostRepository {
+let PostRepository = class PostRepository extends typeorm_1.Repository {
 };
 PostRepository = __decorate([
     (0, typeorm_1.EntityRepository)(post_entity_1.Post)

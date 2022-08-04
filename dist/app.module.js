@@ -8,12 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const auth_module_1 = require("./auth/auth.module");
-const users_module_1 = require("./users/users.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_config_1 = require("./config/typeorm.config");
+const auth_module_1 = require("./auth/auth.module");
+const users_module_1 = require("./users/users.module");
 const post_module_1 = require("./post/post.module");
-const followers_controller_1 = require("./followers/followers.controller");
 const followers_module_1 = require("./followers/followers.module");
 let AppModule = class AppModule {
 };
@@ -21,12 +20,12 @@ AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forRoot(typeorm_config_1.typeOrmConfig),
-            auth_module_1.AuthModule,
             users_module_1.UsersModule,
-            post_module_1.PostModule,
+            auth_module_1.AuthModule,
             followers_module_1.FollowersModule,
+            post_module_1.PostModule,
         ],
-        controllers: [followers_controller_1.FollowersController],
+        controllers: [],
         providers: [],
     })
 ], AppModule);

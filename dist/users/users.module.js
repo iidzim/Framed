@@ -11,6 +11,8 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const follower_repository_1 = require("../followers/follower.repository");
 const followers_module_1 = require("../followers/followers.module");
+const post_module_1 = require("../post/post.module");
+const post_repository_1 = require("../post/post.repository");
 const user_repository_1 = require("./user.repository");
 const users_controller_1 = require("./users.controller");
 const users_service_1 = require("./users.service");
@@ -22,8 +24,10 @@ UsersModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([
                 user_repository_1.UserRepository,
                 follower_repository_1.FollowerRepository,
+                post_repository_1.PostRepository,
             ]),
             followers_module_1.FollowersModule,
+            post_module_1.PostModule,
         ],
         controllers: [users_controller_1.UsersController],
         providers: [users_service_1.UsersService],

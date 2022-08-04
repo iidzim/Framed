@@ -1,10 +1,10 @@
-import { EntityRepository } from "typeorm";
+import { EntityRepository, Repository } from "typeorm";
 import { Post } from "./post.entity";
 
 @EntityRepository(Post)
-export class PostRepository {
+export class PostRepository extends Repository<Post> {
 
-    // async getPosts(): Promise<Post[]> {
-        
-    // }
+	// async getPosts(): Promise<Post[]> {
+		
+	// }
 }
