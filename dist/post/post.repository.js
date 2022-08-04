@@ -34,7 +34,7 @@ let PostRepository = class PostRepository extends typeorm_1.Repository {
     async editPost(req, post_id, description) {
         const owner = req.user;
         const post = await this.findOne({ where: { id: post_id } });
-        if (post.createdBy.id !== req.user.id) {
+        if (post.createdBy.id !== owner.id) {
             throw new common_1.UnauthorizedException("You are not allowed to edit this post");
         }
         post.description = description;

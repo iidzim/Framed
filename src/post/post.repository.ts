@@ -25,7 +25,7 @@ export class PostRepository extends Repository<post> {
 
 		const owner = req.user;
 		const post = await this.findOne({ where: { id: post_id} });
-		if (post.createdBy.id !== req.user.id) {
+		if (post.createdBy.id !== owner.id) {
 			throw new UnauthorizedException("You are not allowed to edit this post");
 		}
 		post.description = description;
