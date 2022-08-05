@@ -1,4 +1,4 @@
-import { Exclude } from "class-transformer";
+// import { Exclude } from "class-transformer";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { UserStatus } from "./UserStatus.enum";
@@ -29,7 +29,8 @@ export class Profile extends BaseEntity{
 	@Column()
 	salt: string;
 
-	@Exclude()
+	// @Exclude()
+	@Column()
 	password: string;
 
 	@Column({ default: false })
