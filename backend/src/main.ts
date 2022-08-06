@@ -8,7 +8,7 @@ async function bootstrap() {
 bootstrap();
 
 
-//td: script for git push
+//td: script for git push √
 //td: git branching and merging
 	//? https://www.youtube.com/watch?v=Q1kHG842HoI&list=LL&index=14&t=2259s&ab_channel=SuperSimpleDev
 		//= second commit to branch
