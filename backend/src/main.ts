@@ -8,6 +8,10 @@ async function bootstrap() {
 bootstrap();
 
 
+//td: script for git push
+//td: git branching and merging
+	//? https://www.youtube.com/watch?v=Q1kHG842HoI&list=LL&index=14&t=2259s&ab_channel=SuperSimpleDev
+
 //+ add middleware & AuthGuard to protect this endpoint
 //+ create jwt for logged in user
 //+ maybe add google authentication later
