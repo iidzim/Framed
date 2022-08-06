@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 echo “running command from” $PWD
 cd $PWD
 rm -rf node_modules/ dist/
