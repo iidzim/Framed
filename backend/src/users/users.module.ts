@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FollowerRepository } from '../followers/follower.repository';
 import { FollowersModule } from '../followers/followers.module';
@@ -10,16 +11,22 @@ import { UsersService } from './users.service';
 
 @Module({
     imports: [
+        PostModule,
+        FollowersModule,
         TypeOrmModule.forFeature([
             UserRepository,
             FollowerRepository,
             PostRepository,
         ]),
-        FollowersModule,
-        PostModule,
+        JwtModule.register({
+            secret: process.env.JWT_SECRET,
+            signOptions: {
+              expiresIn: '1d',
+            },
+        }),
     ],
     controllers: [UsersController],
-    providers: [UsersService],
-    exports: [UsersService],
+    providers: [UsersService, JwtService],
+    exports: [UsersService, JwtService],
 })
 export class UsersModule {}

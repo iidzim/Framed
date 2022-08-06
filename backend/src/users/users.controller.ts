@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post } from '@nestjs/common';
+import { Controller, Get, HttpCode, Patch, Post } from '@nestjs/common';
 
 @Controller()
 //td: add AuthGuard to protect this endpoint
@@ -16,6 +16,7 @@ export class UsersController {
     @Patch('edit/fullname')
     async editFullname() {}
 
+    @HttpCode(200)
     @Post('edit/avatar')
     async editAvatar() {}
 

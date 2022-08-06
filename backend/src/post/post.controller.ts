@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Post, Req } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { PostCategory } from './category.enum';
 import { post } from './post.entity';
@@ -43,6 +43,7 @@ export class PostController {
 		return await this.postService.getUserPosts(req.user);
 	}
 
+	@HttpCode(200)
 	@Post('create')
 	async createPost(
 		@Req() req,

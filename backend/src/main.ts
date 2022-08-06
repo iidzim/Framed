@@ -2,7 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
-
+import * as dotenv from "dotenv";
+dotenv.config({ path: `.env` })
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -17,7 +18,7 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
 	app.use(cookieParser());
-	app.enableCors({origin: "http://localhost:", credentials: true});
+	app.enableCors({origin: process.env.FRONTEND_HOST, credentials: true});
 	await app.listen(3001);
 }
 bootstrap();
@@ -28,8 +29,8 @@ bootstrap();
 	//? https://www.youtube.com/watch?v=Q1kHG842HoI&list=LL&index=14&t=2259s&ab_channel=SuperSimpleDev
 
 //+ add swagger √
-//+ add middleware & AuthGuard to protect this endpoint
 //+ create jwt for logged in user
+//+ add middleware & AuthGuard to protect this endpoint
 //+ maybe add google authentication later
 //+ enable/disable two factor authentication
 

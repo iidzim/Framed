@@ -5,10 +5,10 @@ import { Profile } from "../users/user.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    host: 'localhost',
+    host: process.env.DB_HOST,
     port: 5432,
-    username: 'test',
-    password: 'test',
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
     database: 'test_db',
     entities: [
         Profile,

@@ -38,12 +38,9 @@ export class UserRepository extends Repository<Profile> {
 		return user;
 	}
 
-	async signUp(fullname: string, username: string, email: string, password: string): Promise<any> {
+	async signUp(fullname: string, username: string, email: string, password: string): Promise<Profile> {
+
 		console.log("register > " + fullname + " " + username + " " + email + " " + password);
-		// const existUser = await this.findByEmail(email);
-		// if (existUser) {
-		// 	throw new BadRequestException('Email already exists');
-		// }
 		const newUser = new Profile();
 		newUser.fullname = fullname;
 		newUser.username = username;
@@ -56,19 +53,18 @@ export class UserRepository extends Repository<Profile> {
 		} catch (error) {
 			if (error.code === '23505') {
 				throw new BadRequestException('Username/email already exists');
-			} else {
-				throw new BadRequestException('error while creating user -> ' + error.message);
 			}
+			throw new BadRequestException('error while creating user -> ' + error.message);
 		}
-		//& create token for new user and return it
+		return newUser;
 	}
 
 	async validatePassword(username: string, password: string): Promise<any> {
 		const user = await this.findByUsername(username);
-		if (user && user.validatePassword(password)) {
+		if (user && await bcrypt.compare(password, user.password)) {
 			return user;
 		} else {
-			return null;
+			throw new BadRequestException('Invalid credentials');
 		}
 	}
 
