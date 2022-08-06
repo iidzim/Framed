@@ -39,27 +39,28 @@ export class UserRepository extends Repository<Profile> {
 	}
 
 	async signUp(fullname: string, username: string, email: string, password: string): Promise<any> {
-		
-		const existUser = await this.findByEmail(username);
-		if (existUser) {
-			throw new BadRequestException('Email already exists');
-		}
+		console.log("register > " + fullname + " " + username + " " + email + " " + password);
+		// const existUser = await this.findByEmail(email);
+		// if (existUser) {
+		// 	throw new BadRequestException('Email already exists');
+		// }
 		const newUser = new Profile();
 		newUser.fullname = fullname;
 		newUser.username = username;
 		newUser.email = email;
-		newUser.avatar = "https://avatars.dicebear.com/api/croodles/" + username + ".svg";
+		newUser.avatar = "https://avatars.dicebear.com/api/avataaars/" + username + ".svg";
 		newUser.salt = await bcrypt.genSalt();
 		newUser.password = await bcrypt.hash(password, newUser.salt);
 		try{
 			await newUser.save();
 		} catch (error) {
 			if (error.code === '23505') {
-				throw new BadRequestException('Username already exists');
+				throw new BadRequestException('Username/email already exists');
 			} else {
 				throw new BadRequestException('error while creating user -> ' + error.message);
 			}
 		}
+		//& create token for new user and return it
 	}
 
 	async validatePassword(username: string, password: string): Promise<any> {
