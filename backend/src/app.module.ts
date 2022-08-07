@@ -10,7 +10,7 @@ import { FollowersModule } from './followers/followers.module';
 @Module({
 	imports: [
 		TypeOrmModule.forRoot(typeOrmConfig),
-		// ConfigModule.forRoot({ envFilePath: '.env' }),
+		ConfigModule.forRoot({ envFilePath: '.env' }),
 		UsersModule,
 		AuthModule,
 		FollowersModule,

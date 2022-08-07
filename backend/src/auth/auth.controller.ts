@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { localAuthenticationGuard } from './localAuthentication.guard';
+import { JwtStrategy } from './jwt.strategy';
+// import { localAuthenticationGuard } from './localAuthentication.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +22,6 @@ export class AuthController {
     }
 
     @HttpCode(200)
-    @UseGuards(localAuthenticationGuard)
     @Post('login')
     async login(
         @Res({passthrough: true}) res,
@@ -31,6 +31,7 @@ export class AuthController {
         return this.authService.login(res, username, password);
     }
 
+    @UseGuards(JwtStrategy)
     @Get('logout')
     async logout(@Req() req, @Res({passthrough: true}) res) {
         return this.authService.logout(req, res);

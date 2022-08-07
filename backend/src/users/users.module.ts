@@ -8,6 +8,8 @@ import { PostRepository } from '../post/post.repository';
 import { UserRepository } from './user.repository';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import * as dotenv from "dotenv";
+dotenv.config({ path: `.env` }) 
 
 @Module({
     imports: [
@@ -20,6 +22,7 @@ import { UsersService } from './users.service';
         ]),
         JwtModule.register({
             secret: process.env.JWT_SECRET,
+            // secret: 'unsplash',
             signOptions: {
               expiresIn: '1d',
             },

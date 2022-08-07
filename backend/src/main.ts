@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import * as dotenv from "dotenv";
-dotenv.config({ path: `.env` })
+dotenv.config({ path: `.env` }) 
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -29,9 +29,13 @@ bootstrap();
 	//? https://www.youtube.com/watch?v=Q1kHG842HoI&list=LL&index=14&t=2259s&ab_channel=SuperSimpleDev
 
 //+ add swagger √
-//+ create jwt for logged in user
-//+ add middleware & AuthGuard to protect this endpoint
+//+ create jwt for logged in user √
+//+ add AuthGuard to protect endpoint
+	//- auth/logout + other controllers ...
 //+ maybe add google authentication later
 //+ enable/disable two factor authentication
 
 //& check for file extension in uploads (avatar - post)
+
+//* middleware for checking if user is logged in
+//* authguard for checking if user has access to this endpoint(eg: admin)

@@ -3,6 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { UserStatus } from '../users/UserStatus.enum';
 import { JwtPayload } from './jwtPayload.interface';
+const logout = require('express-passport-logout');
+import * as dotenv from "dotenv";
+dotenv.config({ path: `.env` });
 
 @Injectable()
 export class AuthService {
@@ -21,8 +24,9 @@ export class AuthService {
     async logout(@Req() req, @Res({passthrough: true}) res): Promise<any> {
 
         await this.userService.updateStatus(req.user.id, UserStatus.OFFLINE);
-        //td: remove token from session
+        await logout();
 		await res.clearCookie('connect_sid', {domain: process.env.FRONTEND_HOST, path: '/'});
+        //td: redirection in frontend to signin page
     }
 
 }

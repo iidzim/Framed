@@ -17,7 +17,9 @@ export class UsersService {
 	//& create token for new user and return it
 	async GetToken(id: number){
         const payload: JwtPayload = { id };
+		console.log('HEREE');
         const token = await this.jwtService.sign(payload);
+		console.log('GetToken -> token ' + token);
         return { token };
     }
 
@@ -35,6 +37,7 @@ export class UsersService {
 
 	async register(@Res({passthrough: true}) res, fullname: string, username: string, email: string, password: string): Promise<Profile> {
 		const user = await this.userRepository.signUp(fullname, username, email, password);
+		console.log('register -> created ' + user.fullname);
 		const token = await this.GetToken(user.id);
 		await this.updateStatus(user.id, UserStatus.ONLINE);
 		//? set cookie for new user with token
@@ -57,6 +60,18 @@ export class UsersService {
 		await this.updateStatus(user.id, UserStatus.ONLINE);
 		res.cookie('connect_sid', [token], { httpOnly: true });
 		user.password = undefined;
+		return user;
+	}
+
+	async validateUser(username: string, password: string): Promise<Profile> {
+		let user: Profile;
+		try{
+			user = await this.userRepository.validatePassword(username, password);
+			user.password = undefined;
+		} catch (error) {
+			throw new BadRequestException('Invalid credentials');
+		}
+		await this.updateStatus(user.id, UserStatus.ONLINE);
 		return user;
 	}
 
