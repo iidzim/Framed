@@ -39,7 +39,7 @@ export class UserRepository extends Repository<Profile> {
 
 	async signUp(fullname: string, username: string, email: string, password: string): Promise<Profile> {
 
-		console.log("register > " + fullname + " " + username + " " + email + " " + password);
+		// console.log("register > " + fullname + " " + username + " " + email + " " + password);
 		const newUser = new Profile();
 		newUser.fullname = fullname;
 		newUser.username = username;

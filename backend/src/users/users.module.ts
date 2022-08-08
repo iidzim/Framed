@@ -22,9 +22,8 @@ dotenv.config({ path: `.env` })
         ]),
         JwtModule.register({
             secret: process.env.JWT_SECRET,
-            // secret: 'unsplash',
             signOptions: {
-              expiresIn: '1d',
+              expiresIn: process.env.JWT_EXPIRES_IN,
             },
         }),
     ],
