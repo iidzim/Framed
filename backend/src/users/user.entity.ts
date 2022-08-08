@@ -17,7 +17,7 @@ export class Profile extends BaseEntity{
 	@Column({ length: 50, unique: true })
 	username: string;
 
-	@Column()
+	@Column({ unique: true })
 	email: string;
 
 	@Column()
@@ -53,9 +53,4 @@ export class Profile extends BaseEntity{
 	)
 	posts: post[];
 
-
-	async validatePassword(password: string): Promise<boolean> {
-		const hash = await bcrypt.hash(password, this.salt);
-		return hash === this.password;
-	}
 }

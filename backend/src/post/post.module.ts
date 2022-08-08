@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from '../users/user.repository';
 import { UsersService } from '../users/users.service';
@@ -17,6 +18,7 @@ import { PostService } from './post.service';
     providers: [
         PostService,
         UsersService,
+        JwtService,
     ],
     exports: [PostService],
 })

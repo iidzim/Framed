@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Post, Req } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Post, Req } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { FollowersService } from './followers.service';
 
@@ -33,6 +33,7 @@ export class FollowersController {
         return this.followersService.getFollowing(user);
     }
 
+    @HttpCode(200)
     @Post('follow')
     async follow(@Req() req, id: number) {
         return this.followersService.follow(req, id);
