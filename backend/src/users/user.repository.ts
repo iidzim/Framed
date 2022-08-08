@@ -2,7 +2,6 @@ import { BadRequestException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { Profile } from "./user.entity";
-import { UserStatus } from "./UserStatus.enum";
 
 @EntityRepository(Profile)
 export class UserRepository extends Repository<Profile> {
@@ -38,36 +37,33 @@ export class UserRepository extends Repository<Profile> {
 		return user;
 	}
 
-	async signUp(fullname: string, username: string, email: string, password: string): Promise<any> {
-		
-		const existUser = await this.findByEmail(username);
-		if (existUser) {
-			throw new BadRequestException('Email already exists');
-		}
+	async signUp(fullname: string, username: string, email: string, password: string): Promise<Profile> {
+
+		// console.log("register > " + fullname + " " + username + " " + email + " " + password);
 		const newUser = new Profile();
 		newUser.fullname = fullname;
 		newUser.username = username;
 		newUser.email = email;
-		newUser.avatar = "https://avatars.dicebear.com/api/croodles/" + username + ".svg";
+		newUser.avatar = "https://avatars.dicebear.com/api/avataaars/" + username + ".svg";
 		newUser.salt = await bcrypt.genSalt();
 		newUser.password = await bcrypt.hash(password, newUser.salt);
 		try{
 			await newUser.save();
 		} catch (error) {
 			if (error.code === '23505') {
-				throw new BadRequestException('Username already exists');
-			} else {
-				throw new BadRequestException('error while creating user -> ' + error.message);
+				throw new BadRequestException('Username/email already exists');
 			}
+			throw new BadRequestException('error while creating user -> ' + error.message);
 		}
+		return newUser;
 	}
 
 	async validatePassword(username: string, password: string): Promise<any> {
 		const user = await this.findByUsername(username);
-		if (user && user.validatePassword(password)) {
+		if (user && await bcrypt.compare(password, user.password)) {
 			return user;
 		} else {
-			return null;
+			throw new BadRequestException('Invalid credentials');
 		}
 	}
 
