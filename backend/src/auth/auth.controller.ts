@@ -37,4 +37,13 @@ export class AuthController {
         return this.authService.logout(req, res);
     }
 
+    @HttpCode(200)
+    @Post('check')
+    async isValid(
+        @Body('type') type: string,
+        @Body('value') value: string,
+    ): Promise<any> {
+        return this.authService.isValid(type, value);
+    }
+
 }

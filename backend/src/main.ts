@@ -36,6 +36,6 @@ bootstrap();
 	//* authguard for checking if user has access to this endpoint(eg: admin)
 // maybe add instagram/unsplash authentication later
 
-//& check for file extension in uploads (avatar - post)
 //! check for special characters in registration form √
-//! do not throw exception till check for all error in post body
+//& check for file extension in uploads (avatar - post)
+//= remove double check for user input 

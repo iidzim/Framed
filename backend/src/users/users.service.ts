@@ -23,11 +23,11 @@ export class UsersService {
 	async GetToken(user: Profile): Promise<string> {
 		const id = user.id;
 		const username = user.username;
-        const payload: JwtPayload = { id, username };
+		const payload: JwtPayload = { id, username };
 		// const token = await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRET});
 		const token = await this.jwtService.sign(payload, {secret: 'unsplash'});
-        return token;
-    }
+		return token;
+	}
 
 	async verifyToken(token: string): Promise<any> {
 		try{
@@ -88,14 +88,14 @@ export class UsersService {
 	}
 
 	async updateStatus(id: number, status: UserStatus) {
-        await this.userRepository.update(id, { status: status });
+		await this.userRepository.update(id, { status: status });
 	}
 
 	async updateFullName(id: number, fullname: string) {
 		if (this.containSpecialChar(fullname)) {
 			throw new BadRequestException('Fullname must not contain special characters');
 		}
-        await this.userRepository.update(id, { fullname: fullname });
+		await this.userRepository.update(id, { fullname: fullname });
 	}
 
 	async updateUsername(user: Profile, username: string): Promise<Profile> {
@@ -117,7 +117,7 @@ export class UsersService {
 	}
 
 	async updateAvatar(id: number, avatar: string) {
-        await this.userRepository.update(id, { avatar: avatar });
+		await this.userRepository.update(id, { avatar: avatar });
 	}
 
 	async updatePassword(username: string, old_password: string, new_password: string) {
@@ -128,7 +128,27 @@ export class UsersService {
 		if (!user) {
 			throw new BadRequestException('Invalid credentials');
 		}
-        await this.userRepository.update(username, { password: new_password });
+		await this.userRepository.update(username, { password: new_password });
+	}
+
+	async isValid(type: string, value: string){ //! make sure that the value is not null or undefined
+		if (type == 'username' || type == 'fullname' || type == 'password' || type == 'new_password') {
+			if (this.containSpecialChar(value))
+				throw new BadRequestException('username must not contain special characters');
+		} else if (type == 'email'){
+			var regex = /[`!#$%^&*()+\-=\[\]{};':"\\|,<>\/?~]/;
+			if (regex.test(value))
+				throw new BadRequestException('invalid email');
+		//+ check for duplicated username or email
+		} else if (type == 'username'){
+			const nameDup = await this.userRepository.findAndCount({ where : {username: value} });
+			if (nameDup.length > 0)
+				throw new BadRequestException('username already exists');
+		} else if (type == 'email'){
+			const emailDup = await this.userRepository.findAndCount({ where : {email: value} });
+			if (emailDup.length > 0)
+				throw new BadRequestException('email already exists');
+		}
 	}
 
 }

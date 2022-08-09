@@ -82,4 +82,13 @@ export class UsersController {
 		return user;
 	}
 
+	@HttpCode(200)
+    @Post('isValid')
+    async isValid(
+        @Body('type') type: string,
+        @Body('value') value: string,
+    ): Promise<any> {
+        return this.usersService.isValid(type, value);
+    }
+
 }
