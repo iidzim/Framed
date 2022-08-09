@@ -2,6 +2,7 @@ import { BadRequestException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { Profile } from "./user.entity";
+import { CreateProfileDto } from "./dto-users/create-profile.dto";
 
 @EntityRepository(Profile)
 export class UserRepository extends Repository<Profile> {
@@ -37,9 +38,8 @@ export class UserRepository extends Repository<Profile> {
 		return user;
 	}
 
-	async signUp(fullname: string, username: string, email: string, password: string): Promise<Profile> {
-
-		// console.log("register > " + fullname + " " + username + " " + email + " " + password);
+	async signUp(profileDto: CreateProfileDto): Promise<Profile> {
+		const { fullname, username, email, password } = profileDto;
 		const newUser = new Profile();
 		newUser.fullname = fullname;
 		newUser.username = username;
@@ -66,6 +66,5 @@ export class UserRepository extends Repository<Profile> {
 			throw new BadRequestException('Invalid credentials');
 		}
 	}
-
 
 }

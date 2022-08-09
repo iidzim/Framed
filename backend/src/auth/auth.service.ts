@@ -5,6 +5,9 @@ import { UserStatus } from '../users/UserStatus.enum';
 import { JwtPayload } from './jwtPayload.interface';
 const logout = require('express-passport-logout');
 import * as dotenv from "dotenv";
+import { CreateProfileDto } from '../users/dto-users/create-profile.dto';
+import { ValidLoginDto } from '../users/dto-users/login-profile.dto';
+import { EditProfileDto } from '../users/dto-users/edit-profile.dto';
 dotenv.config({ path: `.env` });
 
 @Injectable()
@@ -13,12 +16,20 @@ export class AuthService {
 		private readonly userService: UsersService,
 	) {}
 
-	async register(@Res({passthrough: true}) res, fullname: string, username: string, email: string, password: string): Promise<any> {
-		return await this.userService.register(res, fullname, username, email, password);
+	// async register(@Res({passthrough: true}) res, fullname: string, username: string, email: string, password: string): Promise<any> {
+		// return await this.userService.register(res, fullname, username, email, password);
+	// }
+
+	async register(@Res({passthrough: true}) res, profileDto: CreateProfileDto): Promise<any> {
+		return await this.userService.register(res, profileDto);
 	}
 
-	async login(@Res({passthrough: true}) res, username: string, password: string): Promise<any> {
-		return await this.userService.login(res, username, password);
+	// async login(@Res({passthrough: true}) res, username: string, password: string): Promise<any> {
+	// 	return await this.userService.login(res, username, password);
+	// }
+
+	async login(@Res({passthrough: true}) res, loginDto: ValidLoginDto): Promise<any> {
+		return await this.userService.login(res, loginDto);
 	}
 
 	async logout(@Req() req, @Res({passthrough: true}) res): Promise<any> {
@@ -32,8 +43,12 @@ export class AuthService {
 		//td: redirection in frontend to signin page
 	}
 
-	async isValid(type: string, value: string): Promise<any> {
-		return await this.userService.isValid(type, value);
+	// async isValid(type: string, value: string): Promise<any> {
+	// 	return await this.userService.isValid(type, value);
+	// }
+
+	async isValid(editDto: EditProfileDto): Promise<any> {
+		return await this.userService.isValid(editDto);
 	}
 
 }

@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { FollowersService } from '../followers/followers.service';
 import { PostService } from '../post/post.service';
 import * as fs  from "fs";
+import { EditProfileDto } from './dto-users/edit-profile.dto';
 
 @Controller()
 //td: add AuthGuard to protect this endpoint
@@ -56,15 +57,17 @@ export class UsersController {
 	@UseInterceptors(FileInterceptor('avatar'))
 	async editUsername(
 		@Req() req: Request,
-		@Body('fullname') fullname: string,
-		@Body('username') username: string,
-		@Body('old_password') old_password: string,
-		@Body('new_password') new_password: string,
-		@Body('fileName') fileName : string,
+		@Body() editDto : EditProfileDto,
 		@UploadedFile() avatar: Express.Multer.File,
+		// @Body('fullname') fullname: string,
+		// @Body('username') username: string,
+		// @Body('old_password') old_password: string,
+		// @Body('new_password') new_password: string,
+		// @Body('fileName') fileName : string,
 	) {
 		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUser(user_token.id);
+		const { fullname, username, old_password, new_password, fileName } = editDto;
 		if (username != null || user.username !== username) {
 			await this.usersService.updateUsername(user, username);
 		}
@@ -85,10 +88,12 @@ export class UsersController {
 	@HttpCode(200)
     @Post('isValid')
     async isValid(
-        @Body('type') type: string,
-        @Body('value') value: string,
+		@Body() editDto: EditProfileDto,
+        // @Body('type') type: string,
+        // @Body('value') value: string,
     ): Promise<any> {
-        return this.usersService.isValid(type, value);
+        // return this.usersService.isValid(type, value);
+        return this.usersService.isValid(editDto);
     }
 
 }

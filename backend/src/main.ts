@@ -17,8 +17,6 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
 	app.use(cookieParser());
-	// console.log('main >> ' + process.env.FRONTEND_HOST + ' ' + process.env.HOST + ' ' + process.env.DB_USER + ' ' + process.env.DB_PASSWORD + ' ' + process.env.DB_NAME + ' ' + process.env.DB_JWT_SECRET);
-	// app.enableCors({origin: process.env.FRONTEND_HOST, credentials: true});
 	app.enableCors({origin: 'http://localhost:3000', credentials: true});
 	await app.listen(3001);
 }
@@ -39,3 +37,7 @@ bootstrap();
 //! check for special characters in registration form √
 //& check for file extension in uploads (avatar - post)
 //= remove double check for user input 
+//- serialize user input
+//+ DTO
+//? await for async functions
+ 

@@ -5,6 +5,9 @@ import { UserStatus } from './UserStatus.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '../auth/jwtPayload.interface';
+import { CreateProfileDto } from './dto-users/create-profile.dto';
+import { EditProfileDto } from './dto-users/edit-profile.dto';
+import { ValidLoginDto } from './dto-users/login-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -14,10 +17,10 @@ export class UsersService {
 		private readonly jwtService: JwtService,
 	) {}
 
-	containSpecialChar(str: string) {
-		var regex = /[`!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
-		return regex.test(str);
-	}
+	// containSpecialChar(str: string) { //! use class-validator instead
+	// 	var regex = /[`!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
+	// 	return regex.test(str);
+	// }
 
 	//& create token for new user and return it
 	async GetToken(user: Profile): Promise<string> {
@@ -41,11 +44,9 @@ export class UsersService {
 		}
 	}
 
-	async register(@Res({passthrough: true}) res, fullname: string, username: string, email: string, password: string): Promise<Profile> {
-		if (this.containSpecialChar(username) || this.containSpecialChar(fullname) || this.containSpecialChar(email) || this.containSpecialChar(password)) {
-			throw new BadRequestException('input data must not contain special characters');
-		}
-		const user = await this.userRepository.signUp(fullname, username, email, password);
+	// async register(@Res({passthrough: true}) res, fullname: string, username: string, email: string, password: string): Promise<Profile> {
+	async register(@Res({passthrough: true}) res, profileDto: CreateProfileDto): Promise<Profile> {
+		const user = await this.userRepository.signUp(profileDto);
 		const token = await this.GetToken(user);
 		await this.updateStatus(user.id, UserStatus.ONLINE);
 		//? set cookie for new user with token
@@ -54,18 +55,19 @@ export class UsersService {
 		return user;
 	}
 
-	async login(@Res({passthrough: true}) res, username: string, password: string): Promise<Profile> {
+	// async login(@Res({passthrough: true}) res, username: string, password: string): Promise<Profile> {
+	async login(@Res({passthrough: true}) res, loginDto: ValidLoginDto): Promise<Profile> {
 		let user: Profile;
+		const { username, password } = loginDto;
 		try{
 			user = await this.userRepository.validatePassword(username, password);
-			user.password = undefined;
 		} catch (error) {
 			throw new BadRequestException('Invalid credentials');
 		}
 		//+ generate token for logged in user
 		const token = await this.GetToken(user);
-		//? set cookie for logged in user with token
 		await this.updateStatus(user.id, UserStatus.ONLINE);
+		//? set cookie for logged in user with token
 		res.cookie('connect_sid', [token], { httpOnly: true });
 		user.password = undefined;
 		return user;
@@ -92,16 +94,16 @@ export class UsersService {
 	}
 
 	async updateFullName(id: number, fullname: string) {
-		if (this.containSpecialChar(fullname)) {
-			throw new BadRequestException('Fullname must not contain special characters');
-		}
+		// if (this.containSpecialChar(fullname)) {
+		// 	throw new BadRequestException('Fullname must not contain special characters');
+		// }
 		await this.userRepository.update(id, { fullname: fullname });
 	}
 
 	async updateUsername(user: Profile, username: string): Promise<Profile> {
-		if (this.containSpecialChar(username)) {
-			throw new BadRequestException('username must not contain special characters');
-		}
+		// if (this.containSpecialChar(username)) {
+		// 	throw new BadRequestException('username must not contain special characters');
+		// }
 		user.username = username;
 		try {
 			await user.save();
@@ -131,21 +133,25 @@ export class UsersService {
 		await this.userRepository.update(username, { password: new_password });
 	}
 
-	async isValid(type: string, value: string){ //! make sure that the value is not null or undefined
-		if (type == 'username' || type == 'fullname' || type == 'password' || type == 'new_password') {
-			if (this.containSpecialChar(value))
-				throw new BadRequestException('username must not contain special characters');
-		} else if (type == 'email'){
-			var regex = /[`!#$%^&*()+\-=\[\]{};':"\\|,<>\/?~]/;
-			if (regex.test(value))
-				throw new BadRequestException('invalid email');
-		//+ check for duplicated username or email
-		} else if (type == 'username'){
-			const nameDup = await this.userRepository.findAndCount({ where : {username: value} });
+	// async isValid(type: string, value: string){ //! make sure that the value is not null or undefined
+	async isValid(editDto: EditProfileDto){ //! make sure that the value is not null or undefined
+		// if (type == 'username' || type == 'fullname' || type == 'password' || type == 'new_password') {
+		// 	if (this.containSpecialChar(value))
+		// 		throw new BadRequestException('username must not contain special characters');
+		// } else if (type == 'email'){
+		// 	var regex = /[`!#$%^&*()+\-=\[\]{};':"\\|,<>\/?~]/;
+		// 	if (regex.test(value))
+		// 		throw new BadRequestException('invalid email');
+		// } else if (type == 'username'){
+		//+ check for duplicated username & email
+		const { username, email } = editDto;
+		if (username != null) {
+			const nameDup = await this.userRepository.findAndCount({ where : {username: username} });
 			if (nameDup.length > 0)
 				throw new BadRequestException('username already exists');
-		} else if (type == 'email'){
-			const emailDup = await this.userRepository.findAndCount({ where : {email: value} });
+		}
+		else if (email != null) {
+			const emailDup = await this.userRepository.findAndCount({ where : {email: email} });
 			if (emailDup.length > 0)
 				throw new BadRequestException('email already exists');
 		}
