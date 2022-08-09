@@ -14,12 +14,12 @@ async function bootstrap() {
 		.setVersion('1.0')
 		.addTag('api')
 		.build();
-	
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
 	app.use(cookieParser());
-	console.log('main >> ' + process.env.FRONTEND_HOST + ' ' + process.env.HOST + ' ' + process.env.DB_USER + ' ' + process.env.DB_PASSWORD + ' ' + process.env.DB_NAME + ' ' + process.env.DB_JWT_SECRET);
-	app.enableCors({origin: process.env.FRONTEND_HOST, credentials: true});
+	// console.log('main >> ' + process.env.FRONTEND_HOST + ' ' + process.env.HOST + ' ' + process.env.DB_USER + ' ' + process.env.DB_PASSWORD + ' ' + process.env.DB_NAME + ' ' + process.env.DB_JWT_SECRET);
+	// app.enableCors({origin: process.env.FRONTEND_HOST, credentials: true});
+	app.enableCors({origin: 'http://localhost:3000', credentials: true});
 	await app.listen(3001);
 }
 bootstrap();
@@ -33,8 +33,9 @@ bootstrap();
 //+ add swagger √
 //+ create jwt for logged in user √
 //+ add AuthGuard to protect endpoint
-//+ maybe add instagram/unsplash authentication later
+	//* authguard for checking if user has access to this endpoint(eg: admin)
+// maybe add instagram/unsplash authentication later
 
 //& check for file extension in uploads (avatar - post)
-
-//* authguard for checking if user has access to this endpoint(eg: admin)
+//! check for special characters in registration form √
+//! do not throw exception till check for all error in post body

@@ -14,20 +14,25 @@ export class UsersService {
 		private readonly jwtService: JwtService,
 	) {}
 
+	containSpecialChar(str: string) {
+		var regex = /[`!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
+		return regex.test(str);
+	}
+
 	//& create token for new user and return it
 	async GetToken(user: Profile): Promise<string> {
 		const id = user.id;
 		const username = user.username;
         const payload: JwtPayload = { id, username };
-		const token = await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRET});
-		// console.log('GetToken -> token ' + token);
+		// const token = await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRET});
+		const token = await this.jwtService.sign(payload, {secret: 'unsplash'});
         return token;
     }
 
 	async verifyToken(token: string): Promise<any> {
 		try{
-			const check = await this.jwtService.verify(token);
-			if (typeof check === 'object' && check.id) {
+			const check = await this.jwtService.verify(token.toString(), {secret: 'unsplash'});
+			if (typeof check === 'object' && 'id' in check) {
 				return check;
 			}
 			throw new BadRequestException('Invalid token');
@@ -37,9 +42,11 @@ export class UsersService {
 	}
 
 	async register(@Res({passthrough: true}) res, fullname: string, username: string, email: string, password: string): Promise<Profile> {
+		if (this.containSpecialChar(username) || this.containSpecialChar(fullname) || this.containSpecialChar(email) || this.containSpecialChar(password)) {
+			throw new BadRequestException('input data must not contain special characters');
+		}
 		const user = await this.userRepository.signUp(fullname, username, email, password);
 		const token = await this.GetToken(user);
-		// console.log('register -> token ' + token);
 		await this.updateStatus(user.id, UserStatus.ONLINE);
 		//? set cookie for new user with token
 		res.cookie('connect_sid', [token], { httpOnly: true });
@@ -85,13 +92,15 @@ export class UsersService {
 	}
 
 	async updateFullName(id: number, fullname: string) {
+		if (this.containSpecialChar(fullname)) {
+			throw new BadRequestException('Fullname must not contain special characters');
+		}
         await this.userRepository.update(id, { fullname: fullname });
 	}
 
 	async updateUsername(user: Profile, username: string): Promise<Profile> {
-		var regEx = /^[0-9a-zA-Z]+$/;
-		if (!regEx.test(username)) {
-			throw new BadRequestException('Username must be alphanumeric');
+		if (this.containSpecialChar(username)) {
+			throw new BadRequestException('username must not contain special characters');
 		}
 		user.username = username;
 		try {

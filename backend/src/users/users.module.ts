@@ -21,9 +21,11 @@ dotenv.config({ path: `.env` })
             PostRepository,
         ]),
         JwtModule.register({
-            secret: process.env.JWT_SECRET,
+            // secret: process.env.JWT_SECRET,
+            secret: 'unsplash',
             signOptions: {
-              expiresIn: process.env.JWT_EXPIRES_IN,
+            //   expiresIn: process.env.JWT_EXPIRES_IN,
+                expiresIn: '1d',
             },
         }),
     ],

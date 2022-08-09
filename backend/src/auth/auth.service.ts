@@ -23,9 +23,12 @@ export class AuthService {
 
     async logout(@Req() req, @Res({passthrough: true}) res): Promise<any> {
 
-        await this.userService.updateStatus(req.user.id, UserStatus.OFFLINE);
+		const user_token = await this.userService.verifyToken(req.cookies.connect_sid);
+        await this.userService.updateStatus(user_token.id, UserStatus.OFFLINE);
         await logout();
-		await res.clearCookie('connect_sid', {domain: process.env.FRONTEND_HOST, path: '/'});
+		// await res.clearCookie('connect_sid', {domain: process.env.FRONTEND_HOST, path: '/'});
+		await res.clearCookie('connect_sid', {domain: 'http://localhost:3000/', path: '/'});
+        console.log('logout');
         //td: redirection in frontend to signin page
     }
 
