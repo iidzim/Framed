@@ -2,7 +2,7 @@ FROM node:lts-alpine As deps
 
 WORKDIR /usr/src/app
 COPY --chown=node:node package*.json ./
-RUN npm ci
+RUN yarn install --frozen-lockfile
 COPY --chown=node:node . .
 USER node
 
