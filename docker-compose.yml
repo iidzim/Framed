@@ -1,0 +1,69 @@
+version: "3.7"
+services:
+  client:
+    container_name: app-client
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: deps
+    command: yarn run dev
+
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    ports:
+      - '3000:3000'
+    # stdin_open: true
+    # tty: true
+    depends_on:
+      - server
+
+  server:
+    container_name: app-server
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: deps
+    command: npm run start:dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - ./backend/.env
+    ports:
+      - '3030:3030'
+    restart: unless-stopped
+    networks:
+      - backend
+    depends_on:
+      - db
+
+  db:
+    container_name: app-db
+    image: postgres:14.0
+    environment:
+      POSTGRES_USER: ${DB_USER-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD-postgres}
+      POSTGRES_DB: ${DB_NAME-postgres}
+    ports:
+      - "127.0.0.1:5432:5432"
+    # volumes:
+    #   - ./data.volume/postgres-dev/:/var/lib/postgresql/data/
+    restart: unless-stopped
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "psql", "-U", "postgres", "-c", "SELECT 1"]
+      interval: 10s
+      timeout: 1s
+      retries: 3
+      start_period: 5s
+    # logging:
+    #   driver: "syslog"
+    #   options:
+    #     syslog-tag: "postgres"
+    #     syslog-address: "udp://localhost:514"
+
+networks:
+  backend:
