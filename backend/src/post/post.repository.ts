@@ -1,14 +1,16 @@
 import { Req, UnauthorizedException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm";
 import { PostCategory } from "./category.enum";
+import { CreatePostDto } from "./dto-posts/create-post.dto";
 import { post } from "./post.entity";
-import { PostType } from "./post_type.enum";
+import { ContentType } from "./post_type.enum";
 
 @EntityRepository(post)
 export class PostRepository extends Repository<post> {
 
-    async createPost(@Req() req, content: string, type: PostType, description: string, category: PostCategory): Promise<post> {
+    async createPost(@Req() req, postDto: CreatePostDto): Promise<post> {
 
+		const { content, type, description, category } = postDto;
 		const new_post = new post();
 		new_post.content = content;
 		new_post.type = type;

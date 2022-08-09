@@ -1,6 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "../users/user.entity";
-import { PostType } from "./post_type.enum";
+import { ContentType } from "./post_type.enum";
 
 @Entity('post')
 export class post extends BaseEntity {
@@ -12,7 +12,7 @@ export class post extends BaseEntity {
     content: string;
 
     @Column()
-    type: PostType;
+    type: ContentType;
 
     @Column({ nullable: true, length: 500 })
     description: string;

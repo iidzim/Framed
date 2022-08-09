@@ -3,9 +3,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { post } from './post.entity';
 import { PostCategory } from './category.enum';
 import { PostService } from './post.service';
-import { PostType } from './post_type.enum';
+import { ContentType } from './post_type.enum';
 import * as fs  from "fs";
 import { UsersService } from '../users/users.service';
+import { CreatePostDto } from './dto-posts/create-post.dto';
+import { EditPostDto } from './dto-posts/edit-post.dto';
 
 @Controller()
 //td: add AuthGuard to protect this endpoint 
@@ -51,17 +53,19 @@ export class PostController {
 	@UseInterceptors(FileInterceptor('image'))
 	async createPost(
 		@Req() req,
-		@Body('content') content: string,
 		@UploadedFile() image: Express.Multer.File,
-		@Body('type') type: PostType,
-		@Body('description') description: string,
-		@Body('category') category: PostCategory
+		@Body() postDto: CreatePostDto,
+		// @Body('content') content: string,
+		// @Body('type') type: ContentType,
+		// @Body('description') description: string,
+		// @Body('category') category: PostCategory
 	): Promise<post> {
-		if (type == PostType.IMAGE) {
+		const { content, type } = postDto;
+		if (type == ContentType.IMAGE) {
 			const postPath = process.cwd() + '/public/uploads/' + content;
 			fs.writeFileSync(postPath, image.buffer);
 		}
-		return await this.postService.createPost(req.user, content, type, description, category);
+		return await this.postService.createPost(req.user, postDto);
 	}
 
 //& only post owner can see post options (edit / delete)
@@ -69,16 +73,19 @@ export class PostController {
 	@Patch('update/:id')
 	async editPost(
 		@Req() req,
-		@Body('post_id', ParseIntPipe) post_id: number,
-		description: string,
+		@Body() editDto: EditPostDto,
+		// @Body('post_id', ParseIntPipe) post_id: number,
+		// @Body('description') description: string,
 	): Promise<post> {
-		//td: check if the logged in user is the post owner before edit //& to be removed after testing
-		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid); //
-		const user = await this.usersService.getUser(user_token.id); //
-		const post = await this.postService.getPostById(post_id); //
-		if (user !== post.createdBy) { //
-			throw new Error('You are not authorized to edit this post'); //
-		} //
+		const { post_id, description } = editDto;
+
+		//& check if the logged in user is the post owner before edit //& to be removed after testing
+		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid); //&
+		const user = await this.usersService.getUser(user_token.id); //&
+		const post = await this.postService.getPostById(post_id); //&
+		if (user !== post.createdBy) { //&
+			throw new Error('You are not authorized to edit this post'); //&
+		} //&
 		return await this.postService.editPost(user, post_id ,description);
 	}
 
@@ -87,13 +94,13 @@ export class PostController {
 		@Req() req,
 		@Param('id', ParseIntPipe) post_id: number
 	){
-		//td: check if the logged in user is the post owner before deletion //& to be removed after testing
-		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid); //
-		const user = await this.usersService.getUser(user_token.id); //
-		const post = await this.postService.getPostById(post_id); //
-		if (user !== post.createdBy) { //
-			throw new Error('You are not authorized to delete this post'); //
-		} //
+		//& check if the logged in user is the post owner before deletion //& to be removed after testing
+		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid); //&
+		const user = await this.usersService.getUser(user_token.id); //&
+		const post = await this.postService.getPostById(post_id); //&
+		if (user !== post.createdBy) { //&
+			throw new Error('You are not authorized to delete this post'); //&
+		} //&
 		return await this.postService.deletePost(req.user, post_id)
 	}
 }

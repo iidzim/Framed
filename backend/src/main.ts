@@ -30,14 +30,14 @@ bootstrap();
 
 //+ add swagger √
 //+ create jwt for logged in user √
-//+ add AuthGuard to protect endpoint
-	//* authguard for checking if user has access to this endpoint(eg: admin)
+//! add AuthGuard to protect endpoint
+	//- authguard for checking if user has access to this endpoint
 // maybe add instagram/unsplash authentication later
 
-//! check for special characters in registration form √
 //& check for file extension in uploads (avatar - post)
-//= remove double check for user input 
+//! check for special characters in registration form √
+//= remove double check for user input
 //- serialize user input
-//+ DTO
+//+ DTO √
 //? await for async functions
  

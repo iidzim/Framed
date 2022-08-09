@@ -2,9 +2,10 @@ import { Injectable, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from '../users/user.entity';
 import { PostCategory } from './category.enum';
+import { CreatePostDto } from './dto-posts/create-post.dto';
 import { post } from './post.entity';
 import { PostRepository } from './post.repository';
-import { PostType } from './post_type.enum';
+import { ContentType } from './post_type.enum';
 
 @Injectable()
 export class PostService {
@@ -30,8 +31,8 @@ export class PostService {
         return await this.postRepository.findOne({ where: {id: post_id} });
     }
 
-    async createPost(@Req() req, content: string, type: PostType, description: string, category: PostCategory): Promise<post> {
-        return await this.postRepository.createPost(req.user, content, type, description, category);
+    async createPost(@Req() req, postDto: CreatePostDto): Promise<post> {
+        return await this.postRepository.createPost(req.user, postDto);
     }
 
     async editPost(@Req() req, post_id: number, description: string): Promise<post> {
