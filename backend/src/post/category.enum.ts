@@ -12,5 +12,5 @@ export enum PostCategory {
     ATHLETICS = 'athletics',
     FILM = 'film',
     WALLPAPER = 'wallpaper',
-    UNDEFINED = 'undefined',
+    OTHER = 'other',
 }

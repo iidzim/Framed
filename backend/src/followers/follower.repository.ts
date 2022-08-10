@@ -5,8 +5,8 @@ import { Follower } from "./follower.entity";
 @EntityRepository(Follower)
 export class FollowerRepository extends Repository<Follower> {
 
-    async getFollowers(user: Profile): Promise<Follower[]> {
-        return await this.find({ where: { receiver: user.id } });
+    async getFollowers(id: number): Promise<Follower[]> {
+        return await this.find({ where: { receiver: id } });
     }
 
     async getFollowing(user: Profile): Promise<Follower[]> {
@@ -25,5 +25,4 @@ export class FollowerRepository extends Repository<Follower> {
         await follower.save();
         return follower;
     }
-
 }

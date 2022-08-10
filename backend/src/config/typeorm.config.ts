@@ -11,7 +11,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     port: 5432,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: 'test_db',
+    database: process.env.DB_NAME,
     entities: [
         Profile,
         post,

@@ -1,14 +1,13 @@
 import { Injectable, Req, Res } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { UserStatus } from '../users/UserStatus.enum';
-import { JwtPayload } from './jwtPayload.interface';
-const logout = require('express-passport-logout');
-import * as dotenv from "dotenv";
 import { CreateProfileDto } from '../users/dto-users/create-profile.dto';
 import { ValidLoginDto } from '../users/dto-users/login-profile.dto';
 import { EditProfileDto } from '../users/dto-users/edit-profile.dto';
-dotenv.config({ path: `.env` });
+// const logout = require('express-passport-logout');
+import { logout } from 'express-passport-logout';
+// import * as dotenv from "dotenv";
+// dotenv.config({ path: `.env` });
 
 @Injectable()
 export class AuthService {
@@ -16,19 +15,17 @@ export class AuthService {
 		private readonly userService: UsersService,
 	) {}
 
-	// async register(@Res({passthrough: true}) res, fullname: string, username: string, email: string, password: string): Promise<any> {
-		// return await this.userService.register(res, fullname, username, email, password);
-	// }
-
-	async register(@Res({passthrough: true}) res, profileDto: CreateProfileDto): Promise<any> {
+	async register(
+		@Res({passthrough: true}) res,
+		profileDto: CreateProfileDto
+	): Promise<any> {
 		return await this.userService.register(res, profileDto);
 	}
 
-	// async login(@Res({passthrough: true}) res, username: string, password: string): Promise<any> {
-	// 	return await this.userService.login(res, username, password);
-	// }
-
-	async login(@Res({passthrough: true}) res, loginDto: ValidLoginDto): Promise<any> {
+	async login(
+		@Res({passthrough: true}) res,
+		loginDto: ValidLoginDto
+	): Promise<any> {
 		return await this.userService.login(res, loginDto);
 	}
 
@@ -40,12 +37,8 @@ export class AuthService {
 		// await res.clearCookie('connect_sid', {domain: process.env.FRONTEND_HOST, path: '/'});
 		await res.clearCookie('connect_sid', {domain: 'http://localhost:3000/', path: '/'});
 		console.log('logout');
-		//td: redirection in frontend to signin page
+		//? redirection in frontend to signin page
 	}
-
-	// async isValid(type: string, value: string): Promise<any> {
-	// 	return await this.userService.isValid(type, value);
-	// }
 
 	async isValid(editDto: EditProfileDto): Promise<any> {
 		return await this.userService.isValid(editDto);

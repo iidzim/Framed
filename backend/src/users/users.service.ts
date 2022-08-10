@@ -23,12 +23,12 @@ export class UsersService {
 	// }
 
 	//& create token for new user and return it
-	async GetToken(user: Profile): Promise<string> {
+	GetToken(user: Profile): string {
 		const id = user.id;
 		const username = user.username;
 		const payload: JwtPayload = { id, username };
-		// const token = await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRET});
-		const token = await this.jwtService.sign(payload, {secret: 'unsplash'});
+		// const token = await this.jwtService.sign(payload, {secret: process.env.JWT_SECRET});
+		const token = this.jwtService.sign(payload, {secret: 'unsplash'});
 		return token;
 	}
 
@@ -44,46 +44,50 @@ export class UsersService {
 		}
 	}
 
-	// async register(@Res({passthrough: true}) res, fullname: string, username: string, email: string, password: string): Promise<Profile> {
-	async register(@Res({passthrough: true}) res, profileDto: CreateProfileDto): Promise<Profile> {
+	async register(
+		@Res({passthrough: true}) res,
+		profileDto: CreateProfileDto
+	): Promise<Profile> {
 		const user = await this.userRepository.signUp(profileDto);
-		const token = await this.GetToken(user);
+		const token = this.GetToken(user);
 		await this.updateStatus(user.id, UserStatus.ONLINE);
-		//? set cookie for new user with token
+		// set cookie for new user with token
 		res.cookie('connect_sid', [token], { httpOnly: true });
 		user.password = undefined;
 		return user;
 	}
 
-	// async login(@Res({passthrough: true}) res, username: string, password: string): Promise<Profile> {
-	async login(@Res({passthrough: true}) res, loginDto: ValidLoginDto): Promise<Profile> {
-		let user: Profile;
+	async login(
+		@Res({passthrough: true}) res,
+		loginDto: ValidLoginDto
+	): Promise<Profile> {
 		const { username, password } = loginDto;
+		let user: Profile;
 		try{
 			user = await this.userRepository.validatePassword(username, password);
 		} catch (error) {
 			throw new BadRequestException('Invalid credentials');
 		}
 		//+ generate token for logged in user
-		const token = await this.GetToken(user);
+		const token = this.GetToken(user);
 		await this.updateStatus(user.id, UserStatus.ONLINE);
-		//? set cookie for logged in user with token
+		// set cookie for logged in user with token
 		res.cookie('connect_sid', [token], { httpOnly: true });
 		user.password = undefined;
 		return user;
 	}
 
-	async validateUser(username: string, password: string): Promise<Profile> {
-		let user: Profile;
-		try{
-			user = await this.userRepository.validatePassword(username, password);
-			user.password = undefined;
-		} catch (error) {
-			throw new BadRequestException('Invalid credentials');
-		}
-		await this.updateStatus(user.id, UserStatus.ONLINE);
-		return user;
-	}
+	// async validateUser(username: string, password: string): Promise<Profile> {
+	// 	let user: Profile;
+	// 	try{
+	// 		user = await this.userRepository.validatePassword(username, password);
+	// 		user.password = undefined;
+	// 	} catch (error) {
+	// 		throw new BadRequestException('Invalid credentials');
+	// 	}
+	// 	await this.updateStatus(user.id, UserStatus.ONLINE);
+	// 	return user;
+	// }
 
 	async getUser(id: number): Promise<Profile> {
 		return await this.userRepository.findById(id);
@@ -94,16 +98,10 @@ export class UsersService {
 	}
 
 	async updateFullName(id: number, fullname: string) {
-		// if (this.containSpecialChar(fullname)) {
-		// 	throw new BadRequestException('Fullname must not contain special characters');
-		// }
 		await this.userRepository.update(id, { fullname: fullname });
 	}
 
 	async updateUsername(user: Profile, username: string): Promise<Profile> {
-		// if (this.containSpecialChar(username)) {
-		// 	throw new BadRequestException('username must not contain special characters');
-		// }
 		user.username = username;
 		try {
 			await user.save();
@@ -111,9 +109,8 @@ export class UsersService {
 			console.log('updateUsername -> duplicated !! ' + error.code);
 			if (error.code === '23505') {
 				throw new BadRequestException('Username already exists');
-			} else {
-				throw new BadRequestException(error.message);
 			}
+			throw new BadRequestException(error.message);
 		}
 		return user;
 	}
@@ -124,7 +121,7 @@ export class UsersService {
 
 	async updatePassword(username: string, old_password: string, new_password: string) {
 		if (old_password === new_password) {
-			throw new BadRequestException('New password must be different from old password');
+			throw new BadRequestException('New password must be different from old password !');
 		}
 		const user = await this.userRepository.validatePassword(username, old_password);
 		if (!user) {
@@ -133,17 +130,8 @@ export class UsersService {
 		await this.userRepository.update(username, { password: new_password });
 	}
 
-	// async isValid(type: string, value: string){ //! make sure that the value is not null or undefined
 	async isValid(editDto: EditProfileDto){ //! make sure that the value is not null or undefined
-		// if (type == 'username' || type == 'fullname' || type == 'password' || type == 'new_password') {
-		// 	if (this.containSpecialChar(value))
-		// 		throw new BadRequestException('username must not contain special characters');
-		// } else if (type == 'email'){
-		// 	var regex = /[`!#$%^&*()+\-=\[\]{};':"\\|,<>\/?~]/;
-		// 	if (regex.test(value))
-		// 		throw new BadRequestException('invalid email');
-		// } else if (type == 'username'){
-		//+ check for duplicated username & email
+		// check for duplicated username & email
 		const { username, email } = editDto;
 		if (username != null) {
 			const nameDup = await this.userRepository.findAndCount({ where : {username: username} });
@@ -156,7 +144,6 @@ export class UsersService {
 				throw new BadRequestException('email already exists');
 		}
 	}
-
 }
 //- A salt is added to the hashing process to force their uniqueness, 
 //- increase their complexity without increasing user requirements,

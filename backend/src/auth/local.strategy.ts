@@ -22,7 +22,7 @@
 // 		} catch (error) {
 // 			throw new UnauthorizedException();
 // 		}
-// 		//+ generate token for logged in user
+// 		// generate token for logged in user
 // 		const token = await this.userService.GetToken(valid_user.id);
 // 		return token;
 // 	}

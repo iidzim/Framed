@@ -1,8 +1,9 @@
 import { Controller, Delete, Get, HttpCode, Post, Req } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
+import { Follower } from './follower.entity';
 import { FollowersService } from './followers.service';
 
-@Controller('followers')
+@Controller()
 //td: add AuthGuard to protect this endpoint
 export class FollowersController {
 
@@ -12,35 +13,34 @@ export class FollowersController {
     ) {}
 
     @Get('followers')
-    async getMyFollowers(@Req() req) {
-        return this.followersService.getFollowers(req.user);
+    async getMyFollowers(@Req() req): Promise<Follower[]> {
+        return await this.followersService.getFollowers(req.user.id);
     }
 
     @Get('followers/:id')
-    async getFollowers(@Req() req, id: number) {
-        const user = await this.usersService.getUser(id);
-        return this.followersService.getFollowers(user);
+    async getFollowers(@Req() req, id: number): Promise<Follower[]> {
+        return await this.followersService.getFollowers(id);
     }
 
     @Get('following')
-    async getFollowing(@Req() req) {
+    async getFollowing(@Req() req): Promise<Follower[]> {
         return this.followersService.getFollowing(req.user);
     }
 
     @Get('following/:id')
-    async getUserFollowing(@Req() req, id: number) {
+    async getUserFollowing(@Req() req, id: number): Promise<Follower[]> {
         const user = await this.usersService.getUser(id);
-        return this.followersService.getFollowing(user);
+        return await this.followersService.getFollowing(user);
     }
 
     @HttpCode(200)
     @Post('follow')
-    async follow(@Req() req, id: number) {
-        return this.followersService.follow(req, id);
+    async follow(@Req() req, id: number): Promise<Follower> {
+        return await this.followersService.follow(req, id);
     }
 
     @Delete('unfollow')
-    async unfollow(@Req() req, id: number) {
-        return this.followersService.unfollow(req, id);
+    async unfollow(@Req() req, id: number): Promise<any> {
+        return await this.followersService.unfollow(req, id);
     }
 }

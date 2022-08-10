@@ -1,9 +1,8 @@
-// import { Exclude } from "class-transformer";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import * as bcrypt from "bcrypt";
 import { UserStatus } from "./UserStatus.enum";
 import { Follower } from "../followers/follower.entity";
 import { post } from "../post/post.entity";
+import { Exclude } from "class-transformer";
 
 @Entity('profile')
 export class Profile extends BaseEntity{
@@ -29,8 +28,8 @@ export class Profile extends BaseEntity{
 	@Column()
 	salt: string;
 
-	// @Exclude()
-	@Column()
+	@Exclude()
+	// @Column()
 	password: string;
 
 	@Column({ default: false })

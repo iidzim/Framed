@@ -17,12 +17,7 @@ export class AuthController {
     async register(
         @Res({passthrough: true}) res,
         @Body() profileDto :CreateProfileDto,
-        // @Body('fullname') fullname: string,
-        // @Body('username') username: string,
-        // @Body('email') email: string,
-        // @Body('password') password: string,
     ): Promise<any> {
-        // return this.authService.register(res, fullname, username, email, password);
         return await this.authService.register(res, profileDto);
     }
 
@@ -31,10 +26,7 @@ export class AuthController {
     async login(
         @Res({passthrough: true}) res,
         @Body() loginDto: ValidLoginDto,
-        // @Body('username') username: string,
-        // @Body('password') password: string,
     ) {
-        // return this.authService.login(res, username, password);
         return await this.authService.login(res, loginDto);
     }
 
@@ -48,10 +40,7 @@ export class AuthController {
     @Post('check')
     async isValid(
         @Body() editDto: EditProfileDto,
-        // @Body('type') type: string,
-        // @Body('value') value: string,
     ): Promise<any> {
-        // return this.authService.isValid(type, value);
         return await this.authService.isValid(editDto);
     }
 

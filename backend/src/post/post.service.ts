@@ -1,11 +1,11 @@
-import { Injectable, Req } from '@nestjs/common';
+import { Injectable, Req, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from '../users/user.entity';
 import { PostCategory } from './category.enum';
 import { CreatePostDto } from './dto-posts/create-post.dto';
+import { EditPostDto } from './dto-posts/edit-post.dto';
 import { post } from './post.entity';
 import { PostRepository } from './post.repository';
-import { ContentType } from './post_type.enum';
 
 @Injectable()
 export class PostService {
@@ -35,12 +35,16 @@ export class PostService {
         return await this.postRepository.createPost(req.user, postDto);
     }
 
-    async editPost(@Req() req, post_id: number, description: string): Promise<post> {
-        return await this.postRepository.editPost(req.user, post_id, description);
+    async editPost(@Req() req, editDto: EditPostDto): Promise<post> {
+        return await this.postRepository.editPost(req.user, editDto);
     }
 
-    async deletePost(@Req() req, post_id: number){
+    async deletePost(@Req() req, post_id: number): Promise<any> {
         const owner = req.user;
+        const post = await this.postRepository.findOne({ where: { id: post_id} });
+		if (post.createdBy.id !== owner.id) {
+			throw new UnauthorizedException("You are not allowed to edit this post");
+		}
         await this.postRepository.delete({ id: post_id, createdBy: owner });
     }
 }

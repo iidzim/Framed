@@ -6,6 +6,7 @@ import { FollowersService } from '../followers/followers.service';
 import { PostService } from '../post/post.service';
 import * as fs  from "fs";
 import { EditProfileDto } from './dto-users/edit-profile.dto';
+import { Profile } from './user.entity';
 
 @Controller()
 //td: add AuthGuard to protect this endpoint
@@ -17,13 +18,13 @@ export class UsersController {
 	) {}
 
 	@Get('profile')
-	async getMyProfile(@Req() req: Request) {
+	async getMyProfile(@Req() req: Request): Promise<any> {
 		// console.log(req);
 		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUser(user_token.id);
 		console.log('user_token: ' + user.fullname);
 		const following = await this.followerService.getFollowing(user);
-		const followers = await this.followerService.getFollowers(user);
+		const followers = await this.followerService.getFollowers(user.id);
 		const posts = await this.postService.getUserPosts(user);
 		const profile = {
 			"user": user,
@@ -38,10 +39,10 @@ export class UsersController {
 	async getUserProfile(
 		@Req() req: Request,
 		@Param('id', ParseIntPipe) id: number,
-	) {
+	): Promise<any> {
 		const user = await this.usersService.getUser(id);
 		const following = await this.followerService.getFollowing(user);
-		const followers = await this.followerService.getFollowers(user);
+		const followers = await this.followerService.getFollowers(user.id);
 		const posts = await this.postService.getUserPosts(user);
 		const profile = {
 			"user": user,
@@ -59,12 +60,7 @@ export class UsersController {
 		@Req() req: Request,
 		@Body() editDto : EditProfileDto,
 		@UploadedFile() avatar: Express.Multer.File,
-		// @Body('fullname') fullname: string,
-		// @Body('username') username: string,
-		// @Body('old_password') old_password: string,
-		// @Body('new_password') new_password: string,
-		// @Body('fileName') fileName : string,
-	) {
+	): Promise<Profile> {
 		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUser(user_token.id);
 		const { fullname, username, old_password, new_password, fileName } = editDto;
@@ -89,10 +85,7 @@ export class UsersController {
     @Post('isValid')
     async isValid(
 		@Body() editDto: EditProfileDto,
-        // @Body('type') type: string,
-        // @Body('value') value: string,
     ): Promise<any> {
-        // return this.usersService.isValid(type, value);
         return this.usersService.isValid(editDto);
     }
 

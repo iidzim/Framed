@@ -1,15 +1,16 @@
 import { Req, UnauthorizedException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm";
-import { PostCategory } from "./category.enum";
 import { CreatePostDto } from "./dto-posts/create-post.dto";
+import { EditPostDto } from "./dto-posts/edit-post.dto";
 import { post } from "./post.entity";
-import { ContentType } from "./post_type.enum";
 
 @EntityRepository(post)
 export class PostRepository extends Repository<post> {
 
-    async createPost(@Req() req, postDto: CreatePostDto): Promise<post> {
-
+    async createPost(
+		@Req() req,
+		postDto: CreatePostDto
+	): Promise<post> {
 		const { content, type, description, category } = postDto;
 		const new_post = new post();
 		new_post.content = content;
@@ -23,8 +24,11 @@ export class PostRepository extends Repository<post> {
 		return new_post;
 	}
 
-	async editPost(@Req() req, post_id: number, description: string): Promise<post> {
-
+	async editPost(
+		@Req() req,
+		editDto: EditPostDto
+	): Promise<post> {
+		const { post_id, description } = editDto;
 		const owner = req.user;
 		const post = await this.findOne({ where: { id: post_id} });
 		if (post.createdBy.id !== owner.id) {
@@ -34,5 +38,4 @@ export class PostRepository extends Repository<post> {
 		await post.save();
 		return post;
 	}
-
 }
