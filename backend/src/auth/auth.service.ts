@@ -4,8 +4,8 @@ import { UserStatus } from '../users/UserStatus.enum';
 import { CreateProfileDto } from '../users/dto-users/create-profile.dto';
 import { ValidLoginDto } from '../users/dto-users/login-profile.dto';
 import { EditProfileDto } from '../users/dto-users/edit-profile.dto';
-// const logout = require('express-passport-logout');
-import { logout } from 'express-passport-logout';
+const logout = require('express-passport-logout');
+// import { logout } from 'express-passport-logout';
 // import * as dotenv from "dotenv";
 // dotenv.config({ path: `.env` });
 
@@ -29,15 +29,18 @@ export class AuthService {
 		return await this.userService.login(res, loginDto);
 	}
 
-	async logout(@Req() req, @Res({passthrough: true}) res): Promise<any> {
+	// async logout(@Req() req, @Res({passthrough: true}) res): Promise<any> {
+	async logout(@Req() req, @Res() res): Promise<any> {
 
+		console.log('HERE');
 		const user_token = await this.userService.verifyToken(req.cookies.connect_sid);
+		console.log('>> ' + user_token.username);
 		await this.userService.updateStatus(user_token.id, UserStatus.OFFLINE);
 		await logout();
-		// await res.clearCookie('connect_sid', {domain: process.env.FRONTEND_HOST, path: '/'});
-		await res.clearCookie('connect_sid', {domain: 'http://localhost:3000/', path: '/'});
+		await res.clearCookie('connect_sid');
 		console.log('logout');
 		//? redirection in frontend to signin page
+		res.redirect('http://localhost:3000');
 	}
 
 	async isValid(editDto: EditProfileDto): Promise<any> {

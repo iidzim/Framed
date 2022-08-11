@@ -23,6 +23,7 @@ async function bootstrap() {
 bootstrap();
 
 
+//& check for file extension in uploads (avatar - post)
 //td: git branching and merging √
 	//? https://www.youtube.com/watch?v=Q1kHG842HoI&list=LL&index=14&t=2259s&ab_channel=SuperSimpleDev
 
@@ -30,7 +31,5 @@ bootstrap();
 	//- authguard for checking if user has access to this endpoint
 // maybe add instagram/unsplash authentication later
 
-//& check for file extension in uploads (avatar - post)
-//= remove double check for user input
-//? await for async functions
- 
+//td: class-transformer -> post.entity 
+//= add customizer decorator to get user from token

@@ -28,8 +28,8 @@ export class Profile extends BaseEntity{
 	@Column()
 	salt: string;
 
-	@Exclude()
-	// @Column()
+	// @Exclude()
+	@Column()
 	password: string;
 
 	@Column({ default: false })

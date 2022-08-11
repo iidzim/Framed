@@ -1,9 +1,11 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsIn, IsNotEmpty, IsString, Length, Matches } from "class-validator";
 import { PostCategory } from "../category.enum";
 import { ContentType } from "../post_type.enum";
 
 export class CreatePostDto {
 
+	@ApiProperty({ type: [String] })
 	@IsNotEmpty()
 	@Matches(
 		/^[a-zA-Z0-9_-]*$/,
@@ -11,10 +13,12 @@ export class CreatePostDto {
 	)
 	content: string;
 
+	@ApiProperty()
 	@IsNotEmpty()
 	@IsIn(Object.values(ContentType))
 	type: ContentType;
 
+	@ApiProperty({ type: [String] })
 	@IsNotEmpty()
 	@Matches(
 		/^[a-zA-Z0-9_-]*$/,
@@ -22,6 +26,7 @@ export class CreatePostDto {
 	)
 	description: string;
 
+	@ApiProperty()
 	@IsNotEmpty()
 	@IsIn(Object.values(PostCategory))
 	category: PostCategory;

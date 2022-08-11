@@ -22,7 +22,6 @@ export class UsersController {
 		// console.log(req);
 		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUser(user_token.id);
-		console.log('user_token: ' + user.fullname);
 		const following = await this.followerService.getFollowing(user);
 		const followers = await this.followerService.getFollowers(user.id);
 		const posts = await this.postService.getUserPosts(user);

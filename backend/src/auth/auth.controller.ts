@@ -2,9 +2,9 @@ import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nes
 import { CreateProfileDto } from '../users/dto-users/create-profile.dto';
 import { EditProfileDto } from '../users/dto-users/edit-profile.dto';
 import { ValidLoginDto } from '../users/dto-users/login-profile.dto';
+import { AuthenticationGuard } from '../users/auth.guards';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
-// import { localAuthenticationGuard } from './localAuthentication.guard';
+// import { LocalStrategy } from './local.strategy';
 
 @Controller('auth')
 export class AuthController {
@@ -30,7 +30,9 @@ export class AuthController {
         return await this.authService.login(res, loginDto);
     }
 
-    @UseGuards(JwtStrategy)
+    @HttpCode(200)
+    @UseGuards(AuthenticationGuard)
+    // @UseGuards(LocalStrategy)
     @Get('logout')
     async logout(@Req() req, @Res({passthrough: true}) res) {
         return await this.authService.logout(req, res);

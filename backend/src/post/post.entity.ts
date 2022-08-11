@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "../users/user.entity";
 import { ContentType } from "./post_type.enum";
@@ -18,6 +19,7 @@ export class post extends BaseEntity {
     description: string;
 
     @ManyToOne(type => Profile, user => user.posts)
+    // @Transform(({ value }) => value.id) //!!!!!!!!!!!!!
     createdBy: Profile;
 
     @CreateDateColumn()

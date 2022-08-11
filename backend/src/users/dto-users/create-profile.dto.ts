@@ -1,7 +1,9 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsString, Matches } from "class-validator";
 
 export class CreateProfileDto {
 
+	@ApiProperty({ type: [String] })
 	@IsNotEmpty()
 	@IsString()
 	@Matches(
@@ -10,6 +12,7 @@ export class CreateProfileDto {
 	)
 	fullname: string;
 
+	@ApiProperty({ type: [String] })
 	@IsNotEmpty()
 	@IsString()
 	@Matches(
@@ -18,10 +21,12 @@ export class CreateProfileDto {
 	)
 	username: string;
 
+	@ApiProperty({ type: [String] })
 	@IsNotEmpty()
 	@IsEmail()
 	email: string;
 
+	@ApiProperty({ type: [String] })
 	@IsNotEmpty()
 	@Matches(
 		/^[a-zA-Z0-9_-\s]{8,}$/,

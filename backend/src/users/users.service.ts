@@ -66,6 +66,7 @@ export class UsersService {
 		try{
 			user = await this.userRepository.validatePassword(username, password);
 		} catch (error) {
+			console.log('login -> ' + error.message);
 			throw new BadRequestException('Invalid credentials');
 		}
 		//+ generate token for logged in user
@@ -90,7 +91,9 @@ export class UsersService {
 	// }
 
 	async getUser(id: number): Promise<Profile> {
-		return await this.userRepository.findById(id);
+		const user = await this.userRepository.findById(id);
+		user.password = undefined;
+		return user;
 	}
 
 	async updateStatus(id: number, status: UserStatus) {

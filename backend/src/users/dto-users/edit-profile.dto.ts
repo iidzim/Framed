@@ -1,7 +1,10 @@
-import { IsEmail, IsOptional, Matches } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsEmail, IsNotEmpty, IsOptional, Matches } from "class-validator";
 
 export class EditProfileDto {
 
+	@ApiProperty({ type: [String], required: false })
+	@IsNotEmpty()
 	@IsOptional()
 	@Matches(
 		/^[a-zA-Z\s]{5,20}$/,
@@ -9,6 +12,8 @@ export class EditProfileDto {
 	)
 	fullname: string;
 
+	@ApiProperty({ type: [String], required: false })
+	@IsNotEmpty()
 	@IsOptional()
 	@Matches(
 		/^[a-zA-Z0-9_-]{5,20}$/,
@@ -16,6 +21,8 @@ export class EditProfileDto {
 	)
 	username: string;
 
+	@ApiProperty({ type: [String], required: false })
+	@IsNotEmpty()
 	@IsOptional()
 	@Matches(
 		/^[a-zA-Z0-9_-\s]{8,}$/,
@@ -23,6 +30,8 @@ export class EditProfileDto {
 	)
 	old_password: string;
 
+	@ApiProperty({ type: [String], required: false })
+	@IsNotEmpty()
     @IsOptional()
 	@Matches(
 		/^[a-zA-Z0-9_-\s]{8,}$/,
@@ -30,10 +39,14 @@ export class EditProfileDto {
 	)
 	new_password: string;
 
+	@ApiProperty({ type: [String], required: false })
+	@IsNotEmpty()
     @IsOptional()
     @IsEmail()
     email: string;
 
+	@ApiProperty({ type: [String], required: false })
+	@IsNotEmpty()
     @IsOptional()
     fileName: string;
 }

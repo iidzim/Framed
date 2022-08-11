@@ -61,6 +61,9 @@ export class UserRepository extends Repository<Profile> {
 
 	async validatePassword(username: string, password: string): Promise<Profile> {
 		const user = await this.findByUsername(username);
+		for (const [i, j] of Object.entries(user)) {
+			console.log(i, j);
+		}
 		if (user && await bcrypt.compare(password, user.password)) {
 			return user;
 		}

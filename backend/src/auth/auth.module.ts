@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../users/users.module';
 import { UserRepository } from '../users/user.repository';
 import { PassportModule } from '@nestjs/passport';
+// import { LocalStrategy } from './local.strategy';
 
 @Module({
 	imports: [

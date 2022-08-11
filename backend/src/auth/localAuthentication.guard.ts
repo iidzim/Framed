@@ -1,6 +1,13 @@
-// import { Injectable } from "@nestjs/common";
+// import { Injectable, Req } from "@nestjs/common";
 // import { AuthGuard } from '@nestjs/passport';
 
 // @Injectable()
-// export class localAuthenticationGuard extends AuthGuard('local') {
+// export class AuthenticationGuard extends AuthGuard('local') {
+//     constructor(){
+//         super();
+//     }
+    
+//     async isAuthenticated(@Req() req){
+//         console.log(req);
+//     }
 // }

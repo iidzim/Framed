@@ -1,11 +1,14 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, Matches } from "class-validator";
 
 export class EditPostDto {
 
+	@ApiProperty()
     @IsNotEmpty()
     @IsNumber()
     post_id: number;
 
+	@ApiProperty()
 	@IsNotEmpty()
 	@Matches(
 		/^[a-zA-Z0-9_-]*$/,
