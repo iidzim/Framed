@@ -9,6 +9,7 @@ import { UserRepository } from './user.repository';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import * as dotenv from "dotenv";
+import { JwtStrategy } from '../auth/jwt.strategy';
 dotenv.config({ path: `.env` }) 
 
 @Module({

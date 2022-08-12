@@ -33,6 +33,9 @@ export class AuthService {
 	async logout(@Req() req, @Res() res): Promise<any> {
 
 		console.log('HERE');
+		console.log('---------------------------------------------');
+		console.log(req.cookies);
+		console.log('---------------------------------------------');
 		const user_token = await this.userService.verifyToken(req.cookies.connect_sid);
 		console.log('>> ' + user_token.username);
 		await this.userService.updateStatus(user_token.id, UserStatus.OFFLINE);

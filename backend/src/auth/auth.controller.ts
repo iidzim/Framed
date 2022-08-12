@@ -1,8 +1,9 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { CustomAuthguard } from '../users/auth.guards';
 import { CreateProfileDto } from '../users/dto-users/create-profile.dto';
 import { EditProfileDto } from '../users/dto-users/edit-profile.dto';
 import { ValidLoginDto } from '../users/dto-users/login-profile.dto';
-import { AuthenticationGuard } from '../users/auth.guards';
+// import { AuthenticationGuard } from '../users/auth.guards';
 import { AuthService } from './auth.service';
 // import { LocalStrategy } from './local.strategy';
 
@@ -12,7 +13,7 @@ export class AuthController {
         private readonly authService: AuthService,
     ) {}
 
-    @HttpCode(200)
+    // @HttpCode(200)
     @Post('register')
     async register(
         @Res({passthrough: true}) res,
@@ -31,8 +32,8 @@ export class AuthController {
     }
 
     @HttpCode(200)
-    @UseGuards(AuthenticationGuard)
-    // @UseGuards(LocalStrategy)
+    // @UseGuards(AuthenticationGuard)
+    @UseGuards(CustomAuthguard)
     @Get('logout')
     async logout(@Req() req, @Res({passthrough: true}) res) {
         return await this.authService.logout(req, res);

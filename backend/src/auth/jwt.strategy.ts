@@ -36,3 +36,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         return user;
     }
 }
+// custom decorator to get user from jwt token but still not working yet (syntax error)

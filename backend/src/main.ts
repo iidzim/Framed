@@ -32,4 +32,9 @@ bootstrap();
 // maybe add instagram/unsplash authentication later
 
 //td: class-transformer -> post.entity 
-//= add customizer decorator to get user from token
+//= add customizer decorator to get user from token .........
+
+
+
+// learn more about graphql
+// add unit tests

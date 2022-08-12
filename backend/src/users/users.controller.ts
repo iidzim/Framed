@@ -7,6 +7,7 @@ import { PostService } from '../post/post.service';
 import * as fs  from "fs";
 import { EditProfileDto } from './dto-users/edit-profile.dto';
 import { Profile } from './user.entity';
+import { getUser } from './getUser.decorator';
 
 @Controller()
 //td: add AuthGuard to protect this endpoint
@@ -18,9 +19,13 @@ export class UsersController {
 	) {}
 
 	@Get('profile')
-	async getMyProfile(@Req() req: Request): Promise<any> {
+	async getMyProfile(
+		// @Req() req: Request,
+		@getUser() token,
+	): Promise<any> {
 		// console.log(req);
-		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
+		// const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
+		const user_token = await this.usersService.verifyToken(token);
 		const user = await this.usersService.getUser(user_token.id);
 		const following = await this.followerService.getFollowing(user);
 		const followers = await this.followerService.getFollowers(user.id);
