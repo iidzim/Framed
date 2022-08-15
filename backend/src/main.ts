@@ -17,8 +17,24 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
 	app.use(cookieParser());
-	app.enableCors({origin: 'http://localhost:3000', credentials: true});
-	await app.listen(3001);
+	// app.enableCors({origin: 'http://localhost:3000', credentials: true});
+	// await app.listen(3001);
+	console.log(
+		"main >> " +
+		  process.env.FRONTEND_HOST +
+		  " " +
+		  process.env.HOST +
+		  " " +
+		  process.env.DB_USER +
+		  " " +
+		  process.env.DB_PASSWORD +
+		  " " +
+		  process.env.DB_NAME +
+		  " " +
+		  process.env.DB_JWT_SECRET
+	);
+	app.enableCors({ origin: process.env.FRONTEND_HOST, credentials: true });
+	await app.listen(process.env.PORT || 3030);
 }
 bootstrap();
 
