@@ -28,8 +28,6 @@ export class FollowersService {
 	}
 
 	async unfollow(user: Profile, id: number): Promise<any> {
-		// const following = await this.userService.getUser(id);
-		// await this.followerRepository.delete({ sender: user, receiver: following.id });
 		return await this.followerRepository.delete({ sender: user, receiver: id });
 	}
 }

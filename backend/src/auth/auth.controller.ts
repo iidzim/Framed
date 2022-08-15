@@ -11,7 +11,7 @@ export class AuthController {
         private readonly authService: AuthService,
     ) {}
 
-    // @HttpCode(200)
+    @HttpCode(200)
     @Post('register')
     async register(
         @Res({passthrough: true}) res,

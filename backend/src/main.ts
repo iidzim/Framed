@@ -17,41 +17,42 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
 	app.use(cookieParser());
-	// app.enableCors({origin: 'http://localhost:3000', credentials: true});
-	// await app.listen(3001);
 	console.log(
 		"main >> " +
-		  process.env.FRONTEND_HOST +
-		  " " +
-		  process.env.HOST +
-		  " " +
-		  process.env.DB_USER +
-		  " " +
-		  process.env.DB_PASSWORD +
-		  " " +
-		  process.env.DB_NAME +
-		  " " +
-		  process.env.DB_JWT_SECRET
+		process.env.FRONTEND_HOST +
+		" " +
+		process.env.HOST +
+		" " +
+		process.env.DB_USER +
+		" " +
+		process.env.DB_PASSWORD +
+		" " +
+		process.env.DB_NAME +
+		" " +
+		process.env.DB_JWT_SECRET
 	);
-	app.enableCors({ origin: process.env.FRONTEND_HOST, credentials: true });
-	await app.listen(process.env.PORT || 3030);
+	app.enableCors({origin: 'http://localhost:3000', credentials: true});
+	await app.listen(3001);
+	// app.enableCors({ origin: process.env.FRONTEND_HOST, credentials: true });
+	// await app.listen(process.env.PORT || 3030);
 }
 bootstrap();
 
 
 //& check for file extension in uploads (avatar - post)
-//td: git branching and merging √
+// maybe add instagram/unsplash authentication later
+//* git branching and merging √
 	//? https://www.youtube.com/watch?v=Q1kHG842HoI&list=LL&index=14&t=2259s&ab_channel=SuperSimpleDev
 
-//! add AuthGuard to protect endpoint
-	//- authguard for checking if user has access to this endpoint
-// maybe add instagram/unsplash authentication later
+//+ currentlly working on:
 
-//td: class-transformer -> post.entity 
-//= add customizer decorator to get user from token .........
+//! add AuthGuard to protect endpoint ... added √ but need more testing
+	//- authguard for checking if user has access to this endpoint (valid token)
+//td: class-transformer -> post.entity ??????? still confused if i need this or not
+//= add customizer decorator to get user from token ......... getUser() return token but didnt check if token is valid !!
 
 
 
-// learn more about graphql
 // add unit tests
-// https://virtualgallery.w3spaces.com/
+// learn more about graphql - redis
+// https://virtualgallery.w3spaces.com/ 

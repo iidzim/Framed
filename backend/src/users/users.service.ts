@@ -17,11 +17,6 @@ export class UsersService {
 		private readonly jwtService: JwtService,
 	) {}
 
-	// containSpecialChar(str: string) { //! use class-validator instead
-	// 	var regex = /[`!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
-	// 	return regex.test(str);
-	// }
-
 	//& create token for new user and return it
 	GetToken(user: Profile): string {
 		const id = user.id;
@@ -78,18 +73,6 @@ export class UsersService {
 		return user;
 	}
 
-	// async validateUser(username: string, password: string): Promise<Profile> {
-	// 	let user: Profile;
-	// 	try{
-	// 		user = await this.userRepository.validatePassword(username, password);
-	// 		user.password = undefined;
-	// 	} catch (error) {
-	// 		throw new BadRequestException('Invalid credentials');
-	// 	}
-	// 	await this.updateStatus(user.id, UserStatus.ONLINE);
-	// 	return user;
-	// }
-
 	async getUser(id: number): Promise<Profile> {
         console.log('3');
 		const user = await this.userRepository.findById(id);
@@ -134,15 +117,15 @@ export class UsersService {
 		await this.userRepository.update(username, { password: new_password });
 	}
 
-	async isValid(editDto: EditProfileDto){ //! make sure that the value is not null or undefined
+	async isValid(editDto: EditProfileDto){
 		// check for duplicated username & email
 		const { username, email } = editDto;
-		if (username != null) {
+		if (username) {
 			const nameDup = await this.userRepository.findAndCount({ where : {username: username} });
 			if (nameDup.length > 0)
 				throw new BadRequestException('username already exists');
 		}
-		else if (email != null) {
+		else if (email) {
 			const emailDup = await this.userRepository.findAndCount({ where : {email: email} });
 			if (emailDup.length > 0)
 				throw new BadRequestException('email already exists');
