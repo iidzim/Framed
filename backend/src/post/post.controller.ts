@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs  from "fs";
 import { post } from './post.entity';
@@ -8,6 +8,7 @@ import { ContentType } from './post_type.enum';
 import { UsersService } from '../users/users.service';
 import { CreatePostDto } from './dto-posts/create-post.dto';
 import { EditPostDto } from './dto-posts/edit-post.dto';
+import { CustomAuthguard } from '../users/auth.guards';
 
 @Controller()
 //td: add AuthGuard to protect this endpoint 
@@ -22,7 +23,8 @@ export class PostController {
 	async getPosts(@Req() req): Promise<post[]> {
 		return await this.postService.getPosts();
 	}
-
+	
+	@UseGuards(CustomAuthguard)
 	@Get('posts/:id')
 	async getPostById(
 		@Req() req,
@@ -41,6 +43,7 @@ export class PostController {
 		return await this.postService.getPosts();
 	}
 
+	@UseGuards(CustomAuthguard)
 	@Get('posts')
 	async getUserPosts(
 		@Req() req,
@@ -48,6 +51,7 @@ export class PostController {
 		return await this.postService.getUserPosts(req.user);
 	}
 
+	@UseGuards(CustomAuthguard)
 	@HttpCode(200)
 	@Post('posts/create')
 	@UseInterceptors(FileInterceptor('image'))
@@ -67,6 +71,7 @@ export class PostController {
 //& only post owner can see post options (edit / delete)
 //& check if the logged in user is the post owner before allowing edit / delete
 
+	@UseGuards(CustomAuthguard)
 	@Patch('update/:id')
 	async editPost(
 		@Req() req,
@@ -77,6 +82,7 @@ export class PostController {
 		return await this.postService.editPost(user, editDto);
 	}
 
+	@UseGuards(CustomAuthguard)
 	@Delete('remove/:id')
 	async deletePost(
 		@Req() req,

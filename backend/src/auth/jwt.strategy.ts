@@ -8,32 +8,35 @@ import { JwtPayload } from "./jwtPayload.interface";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(
-        private readonly userService: UsersService
-    ) {
-        super({
-            jwtFromRequest: ExtractJwt.fromExtractors([
-                (req: any) => {
-                    let data = req.cookies["connect_sid"];
-                    if (!data) {
-                        return null;
-                    }
-                    return data.token;
-                },
-            ]),
-            ignoreExpiration: false,
-            // secretOrKey: process.env.JWT_SECRET
-            secretOrKey: 'unsplash',
-        });
-    }
+	constructor(
+		private readonly userService: UsersService
+	) {
+		super({
+			jwtFromRequest: ExtractJwt.fromExtractors([
+				(req: any) => {
+					let data = req.cookies["connect_sid"];
+					if (!data) {
+						return null;
+					}
+					return data.token;
+				},
+			]),
+			ignoreExpiration: false,
+			// secretOrKey: process.env.JWT_SECRET
+			secretOrKey: 'unsplash',
+		});
+	}
 
-    async validate(payload: JwtPayload): Promise<any> {
-        const { id } = payload;
-        const user = await this.userService.getUser(id);
-        if (!user) {
-            throw new UnauthorizedException();
-        }
-        return user;
-    }
+	async validate(payload: JwtPayload): Promise<any> {
+		const { id } = payload;
+		console.log('1');
+		let user;
+		try {
+			user = await this.userService.getUser(id);
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+		return user;
+	}
 }
-// custom decorator to get user from jwt token but still not working yet (syntax error)

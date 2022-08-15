@@ -1,4 +1,5 @@
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { BadRequestException, createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from "./users.service";
 
 export const getUser = createParamDecorator(
@@ -8,8 +9,9 @@ export const getUser = createParamDecorator(
         const user_token = request.cookies.connect_sid.toString();
         // this.userService.verifyToken(user_token);
         console.log('user_token >>>> '+ user_token);
-        const user = userService.verifyToken(user_token);
-        console.log('user >>>> '+ user);
-        return user;
+        // const user = userService.verifyToken(user_token);
+        // console.log('user >>>> '+ user);
+        // return user;
+        return user_token;
     }
 )

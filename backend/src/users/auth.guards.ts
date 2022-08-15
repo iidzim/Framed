@@ -51,9 +51,9 @@ export class CustomAuthguard extends AuthGuard('jwt') {
 		// }
 		console.log(request);
 		if (request.cookies.connect_sid != null) {
-			console.log('cookies');
-			JwtStrategy.prototype.validate(request.cookies.connect_sid.toString());
-			return true;
+			if (JwtStrategy.prototype.validate(request.cookies.connect_sid.toString())) {
+				return true;
+			}
 		}
 		return false;
 	}

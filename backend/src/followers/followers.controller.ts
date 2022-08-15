@@ -1,9 +1,11 @@
-import { Controller, Delete, Get, HttpCode, Post, Req } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import { CustomAuthguard } from '../users/auth.guards';
 import { UsersService } from '../users/users.service';
 import { Follower } from './follower.entity';
 import { FollowersService } from './followers.service';
 
 @Controller()
+@UseGuards(CustomAuthguard)
 //td: add AuthGuard to protect this endpoint
 export class FollowersController {
 

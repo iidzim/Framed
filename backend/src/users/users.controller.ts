@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, ParseIntPipe, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, ParseIntPipe, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Request, Express } from "express";
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UsersService } from './users.service';
@@ -8,8 +8,10 @@ import * as fs  from "fs";
 import { EditProfileDto } from './dto-users/edit-profile.dto';
 import { Profile } from './user.entity';
 import { getUser } from './getUser.decorator';
+import { CustomAuthguard } from './auth.guards';
 
 @Controller()
+@UseGuards(CustomAuthguard)
 //td: add AuthGuard to protect this endpoint
 export class UsersController {
 	constructor(

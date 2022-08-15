@@ -91,6 +91,7 @@ export class UsersService {
 	// }
 
 	async getUser(id: number): Promise<Profile> {
+        console.log('3');
 		const user = await this.userRepository.findById(id);
 		user.password = undefined;
 		return user;

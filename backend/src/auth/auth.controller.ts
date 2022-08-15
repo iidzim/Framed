@@ -3,9 +3,7 @@ import { CustomAuthguard } from '../users/auth.guards';
 import { CreateProfileDto } from '../users/dto-users/create-profile.dto';
 import { EditProfileDto } from '../users/dto-users/edit-profile.dto';
 import { ValidLoginDto } from '../users/dto-users/login-profile.dto';
-// import { AuthenticationGuard } from '../users/auth.guards';
 import { AuthService } from './auth.service';
-// import { LocalStrategy } from './local.strategy';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +30,6 @@ export class AuthController {
     }
 
     @HttpCode(200)
-    // @UseGuards(AuthenticationGuard)
     @UseGuards(CustomAuthguard)
     @Get('logout')
     async logout(@Req() req, @Res({passthrough: true}) res) {
@@ -46,5 +43,4 @@ export class AuthController {
     ): Promise<any> {
         return await this.authService.isValid(editDto);
     }
-
 }
