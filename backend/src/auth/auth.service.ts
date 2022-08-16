@@ -32,9 +32,10 @@ export class AuthService {
 	// async logout(@Req() req, @Res({passthrough: true}) res): Promise<any> {
 	async logout(@Req() req, @Res() res): Promise<any> {
 
-		const user_token = await this.userService.verifyToken(req.cookies.connect_sid);
+		const user_token = await this.userService.verifyAccessToken(req.cookies.connect_sid);
 		console.log('>> ' + user_token.username);
 		await this.userService.updateStatus(user_token.id, UserStatus.OFFLINE);
+		await this.userService.removeRefreshToken(user_token.id);
 		await logout();
 		await res.clearCookie('connect_sid');
 		await res.clearCookie('connect_fre');
@@ -47,4 +48,8 @@ export class AuthService {
 		return await this.userService.isValid(editDto);
 	}
 
+	async getJwtAccessToken(id: number): Promise<string> {
+		const user = await this.userService.getUser(id);
+		return await this.userService.GetAccessToken(user);
+	}
 }

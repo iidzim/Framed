@@ -77,7 +77,7 @@ export class PostController {
 		@Req() req,
 		@Body() editDto: EditPostDto,
 	): Promise<post> {
-		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
+		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUser(user_token.id);
 		return await this.postService.editPost(user, editDto);
 	}
@@ -88,7 +88,7 @@ export class PostController {
 		@Req() req,
 		@Param('id', ParseIntPipe) post_id: number
 	): Promise<any> {
-		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
+		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUser(user_token.id);
 		return await this.postService.deletePost(user, post_id)
 	}

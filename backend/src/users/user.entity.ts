@@ -28,7 +28,6 @@ export class Profile extends BaseEntity{
 	@Exclude()
 	salt: string;
 
-	// @Exclude()
 	@Column()
 	password: string;
 
@@ -39,7 +38,7 @@ export class Profile extends BaseEntity{
 	two_fa_secret: string;
 
 	// @Exclude()
-	@Column({ nullable: true})
+	@Column({ nullable: true })
 	refresh_token: string;
 
 	@OneToMany(

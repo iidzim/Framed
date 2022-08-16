@@ -5,14 +5,14 @@ import { UsersService } from "../users/users.service";
 import { JwtPayload } from "./jwtPayload.interface";
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-access-token') {
+export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {
 	constructor(
 		private readonly userService: UsersService
 	) {
 		super({
 			jwtFromRequest: ExtractJwt.fromExtractors([
 				(req: any) => {
-					let data = req.cookies["connect_sid"];
+					let data = req.cookies["connect_fre"];
 					if (!data) {
 						return null;
 					}
@@ -20,8 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-access-token') 
 				},
 			]),
 			ignoreExpiration: false,
-			secretOrKey: process.env.JWT_ACCESS_TOKEN_SECRET,
-			expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN
+			secretOrKey: process.env.JWT_REFRESH_TOKEN_SECRET,
+			expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
 		});
 	}
 

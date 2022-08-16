@@ -26,8 +26,8 @@ export class UsersController {
 		@getUser() token,
 	): Promise<any> {
 		// console.log(req);
-		// const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
-		const user_token = await this.usersService.verifyToken(token);
+		// const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
+		const user_token = await this.usersService.verifyAccessToken(token);
 		const user = await this.usersService.getUser(user_token.id);
 		const following = await this.followerService.getFollowing(user);
 		const followers = await this.followerService.getFollowers(user.id);
@@ -67,7 +67,7 @@ export class UsersController {
 		@Body() editDto : EditProfileDto,
 		@UploadedFile() avatar: Express.Multer.File,
 	): Promise<Profile> {
-		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
+		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUser(user_token.id);
 		const { fullname, username, old_password, new_password, fileName } = editDto;
 		if (username != null || user.username !== username) {

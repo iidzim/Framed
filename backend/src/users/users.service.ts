@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Res } from '@nestjs/common';
+import { BadRequestException, Injectable, Res, UnauthorizedException } from '@nestjs/common';
 import { Profile } from './user.entity';
 import { UserRepository } from './user.repository';
 import { UserStatus } from './UserStatus.enum';
@@ -37,7 +37,7 @@ export class UsersService {
 		return refresh_token;
 	}
 
-	async verifyToken(token: string): Promise<any> {
+	async verifyAccessToken(token: string): Promise<any> {
 		try{
 			const check = await this.jwtService.verify(token.toString(), {secret: 'unsplash'});
 			if (typeof check === 'object' && 'id' in check) {
@@ -47,6 +47,23 @@ export class UsersService {
 		} catch (error) {
 			throw new BadRequestException('Invalid token');
 		}
+	}
+
+	async verifyRefreshToken(refresh_token: string, id: number): Promise<Profile> {
+		try{
+			const user = await this.getUser(id);
+			const is_equal = await bcrypt.compare(refresh_token, user.refresh_token)
+			if (is_equal)
+				return user;
+			else
+				throw new UnauthorizedException('invalid refresh token');
+		} catch (error) {
+			throw new UnauthorizedException('invalid refresh token');
+		}
+	}
+
+	async removeRefreshToken(id: number): Promise<any> {
+		return this.userRepository.update(id, {refresh_token: null });
 	}
 
 	async register(
