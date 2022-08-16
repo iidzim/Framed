@@ -29,12 +29,18 @@ async function bootstrap() {
 		" " +
 		process.env.DB_NAME +
 		" " +
-		process.env.DB_JWT_SECRET
+		process.env.JWT_ACCESS_TOKEN_SECRET +
+		" " +
+		process.env.JWT_ACCESS_TOKEN_EXPIRES_IN	+
+		" " +
+		process.env.JWT_REFRESH_TOKEN_SECRET +
+		" " +
+		process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
 	);
-	app.enableCors({origin: 'http://localhost:3000', credentials: true});
-	await app.listen(3001);
-	// app.enableCors({ origin: process.env.FRONTEND_HOST, credentials: true });
-	// await app.listen(process.env.PORT || 3030);
+	// app.enableCors({origin: 'http://localhost:3000', credentials: true});
+	// await app.listen(3001);
+	app.enableCors({ origin: process.env.FRONTEND_HOST, credentials: true });
+	await app.listen(process.env.PORT || 3030);
 }
 bootstrap();
 
@@ -50,7 +56,8 @@ bootstrap();
 	//- authguard for checking if user has access to this endpoint (valid token)
 //td: class-transformer -> post.entity ??????? still confused if i need this or not
 //= add customizer decorator to get user from token ......... getUser() return token but didnt check if token is valid !!
-
+//? implement refresh token
+// * email verification
 
 
 // add unit tests

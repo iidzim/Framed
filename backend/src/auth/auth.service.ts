@@ -37,6 +37,7 @@ export class AuthService {
 		await this.userService.updateStatus(user_token.id, UserStatus.OFFLINE);
 		await logout();
 		await res.clearCookie('connect_sid');
+		await res.clearCookie('connect_fre');
 		console.log('logout');
 		//? redirection in frontend to signin page
 		res.redirect('http://localhost:3000');

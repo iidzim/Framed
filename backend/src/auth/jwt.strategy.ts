@@ -22,8 +22,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 				},
 			]),
 			ignoreExpiration: false,
-			// secretOrKey: process.env.JWT_SECRET
-			secretOrKey: 'unsplash',
+			secretOrKey: process.env.JWT_ACCESS_TOKEN_SECRET
+			// secretOrKey: 'unsplash',
 		});
 	}
 

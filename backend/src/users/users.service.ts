@@ -8,6 +8,7 @@ import { JwtPayload } from '../auth/jwtPayload.interface';
 import { CreateProfileDto } from './dto-users/create-profile.dto';
 import { EditProfileDto } from './dto-users/edit-profile.dto';
 import { ValidLoginDto } from './dto-users/login-profile.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -18,13 +19,22 @@ export class UsersService {
 	) {}
 
 	//& create token for new user and return it
-	GetToken(user: Profile): string {
+	GetAccessToken(user: Profile): string {
 		const id = user.id;
 		const username = user.username;
 		const payload: JwtPayload = { id, username };
-		// const token = await this.jwtService.sign(payload, {secret: process.env.JWT_SECRET});
-		const token = this.jwtService.sign(payload, {secret: 'unsplash'});
-		return token;
+		const access_token = this.jwtService.sign(payload, { secret: process.env.JWT_ACCESS_TOKEN_SECRET, expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN });
+		return access_token;
+	}
+
+	async GetRefreshToken(user: Profile): Promise<string> {
+		const id = user.id;
+		const username = user.username;
+		const payload: JwtPayload = { id, username };
+		const refresh_token = this.jwtService.sign(payload, {secret: process.env.JWT_REFRESH_TOKEN_SECRET, expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN});
+		const hashed_token = await bcrypt.hash(refresh_token, 10);
+		await this.userRepository.update(id, { refresh_token: hashed_token });
+		return refresh_token;
 	}
 
 	async verifyToken(token: string): Promise<any> {
@@ -44,10 +54,12 @@ export class UsersService {
 		profileDto: CreateProfileDto
 	): Promise<Profile> {
 		const user = await this.userRepository.signUp(profileDto);
-		const token = this.GetToken(user);
+		const access_token = this.GetAccessToken(user);
+		const refresh_token = await this.GetRefreshToken(user);
 		await this.updateStatus(user.id, UserStatus.ONLINE);
 		// set cookie for new user with token
-		res.cookie('connect_sid', [token], { httpOnly: true });
+		res.cookie('connect_sid', [access_token], { httpOnly: true });
+		res.cookie('connect_fre', [refresh_token], { httpOnly: true });
 		user.password = undefined;
 		return user;
 	}
@@ -65,16 +77,17 @@ export class UsersService {
 			throw new BadRequestException('Invalid credentials');
 		}
 		//+ generate token for logged in user
-		const token = this.GetToken(user);
+		const acess_token = this.GetAccessToken(user);
+		const refresh_token = await this.GetRefreshToken(user);
 		await this.updateStatus(user.id, UserStatus.ONLINE);
 		// set cookie for logged in user with token
-		res.cookie('connect_sid', [token], { httpOnly: true });
+		res.cookie('connect_sid', [acess_token], { httpOnly: true });
+		res.cookie('connect_fre', [refresh_token], { httpOnly: true });
 		user.password = undefined;
 		return user;
 	}
 
 	async getUser(id: number): Promise<Profile> {
-        console.log('3');
 		const user = await this.userRepository.findById(id);
 		user.password = undefined;
 		return user;

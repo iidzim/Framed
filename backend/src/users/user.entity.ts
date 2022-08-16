@@ -25,7 +25,7 @@ export class Profile extends BaseEntity{
 	@Column({ default: UserStatus.OFFLINE })
 	status: UserStatus;
 
-	@Column()
+	@Exclude()
 	salt: string;
 
 	// @Exclude()
@@ -37,6 +37,10 @@ export class Profile extends BaseEntity{
 
 	@Column({ nullable: true })
 	two_fa_secret: string;
+
+	// @Exclude()
+	@Column({ nullable: true})
+	refresh_token: string;
 
 	@OneToMany(
 		() => Follower,
