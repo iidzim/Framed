@@ -1,7 +1,6 @@
 import { Req, UnauthorizedException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm";
-import { CreatePostDto } from "./dto-posts/create-post.dto";
-import { EditPostDto } from "./dto-posts/edit-post.dto";
+import { CreatePostDto, EditPostDto } from "./dto";
 import { post } from "./post.entity";
 
 @EntityRepository(post)

@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "../users/user.entity";
-import { ContentType } from "./post_type.enum";
+import { ContentType } from "./enum/post_type.enum";
 
 @Entity('post')
 export class post extends BaseEntity {

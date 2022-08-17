@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
-import { CustomAuthguard } from '../users/auth.guards';
-import { UsersService } from '../users/users.service';
+import { CustomAuthguard } from '../auth/guards';
+import { UsersService } from '../users';
 import { Follower } from './follower.entity';
 import { FollowersService } from './followers.service';
 

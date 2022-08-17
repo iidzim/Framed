@@ -1,8 +1,8 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { UserStatus } from "./UserStatus.enum";
+import { Exclude } from "class-transformer";
+import { UserStatus } from "./enum";
 import { Follower } from "../followers/follower.entity";
 import { post } from "../post/post.entity";
-import { Exclude } from "class-transformer";
 
 @Entity('profile')
 export class Profile extends BaseEntity{

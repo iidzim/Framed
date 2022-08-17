@@ -1,8 +1,8 @@
 import { BadRequestException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
+import { CreateProfileDto } from "./dto";
 import { Profile } from "./user.entity";
-import { CreateProfileDto } from "./dto-users/create-profile.dto";
 
 @EntityRepository(Profile)
 export class UserRepository extends Repository<Profile> {

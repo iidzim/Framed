@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
-import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { PostModule } from './post/post.module';
-import { FollowersModule } from './followers/followers.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
+import { AuthModule } from './auth';
+import { UsersModule } from './users';
+import { PostModule } from './post';
+import { FollowersModule } from './followers';
 
 @Module({
 	imports: [

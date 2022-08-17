@@ -1,11 +1,10 @@
 import { Injectable, Req, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from '../users/user.entity';
-import { PostCategory } from './category.enum';
-import { CreatePostDto } from './dto-posts/create-post.dto';
-import { EditPostDto } from './dto-posts/edit-post.dto';
-import { post } from './post.entity';
 import { PostRepository } from './post.repository';
+import { post } from './post.entity';
+import { PostCategory } from './enum';
+import { CreatePostDto, EditPostDto } from './dto';
 
 @Injectable()
 export class PostService {

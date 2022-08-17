@@ -1,14 +1,14 @@
 import { Body, Controller, Get, HttpCode, Param, ParseIntPipe, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { Request, Express } from "express";
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UsersService } from './users.service';
-import { FollowersService } from '../followers/followers.service';
-import { PostService } from '../post/post.service';
+import { Request, Express } from "express";
 import * as fs  from "fs";
-import { EditProfileDto } from './dto-users/edit-profile.dto';
+import { FollowersService } from '../followers';
+import { CustomAuthguard } from '../auth/guards';
+import { PostService } from '../post';
+import { EditProfileDto } from './dto';
+import { getUser } from './decorator';
 import { Profile } from './user.entity';
-import { getUser } from './getUser.decorator';
-import { CustomAuthguard } from './auth.guards';
+import { UsersService } from './users.service';
 
 @Controller()
 @UseGuards(CustomAuthguard)

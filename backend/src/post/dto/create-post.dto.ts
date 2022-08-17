@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsIn, IsNotEmpty, IsString, Length, Matches } from "class-validator";
-import { PostCategory } from "../category.enum";
-import { ContentType } from "../post_type.enum";
+import { IsIn, IsNotEmpty, Matches } from "class-validator";
+import { PostCategory } from "../enum/category.enum";
+import { ContentType } from "../enum/post_type.enum";
 
 export class CreatePostDto {
 

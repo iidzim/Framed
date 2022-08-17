@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FollowerRepository } from '../followers/follower.repository';
-import { FollowersModule } from '../followers/followers.module';
-import { PostModule } from '../post/post.module';
-import { PostRepository } from '../post/post.repository';
+import { FollowerRepository, FollowersModule } from '../followers';
+import { PostModule, PostRepository } from '../post';
 import { UserRepository } from './user.repository';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import * as dotenv from "dotenv";
-import { JwtStrategy } from '../auth/jwt.strategy';
-dotenv.config({ path: `.env` }) 
+dotenv.config({ path: `.env` })
 
 @Module({
     imports: [
@@ -23,10 +20,8 @@ dotenv.config({ path: `.env` })
         ]),
         JwtModule.register({
             secret: process.env.JWT_ACCESS_TOKEN_SECRET,
-            // secret: 'unsplash',
             signOptions: {
               expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
-                // expiresIn: '1d',
             },
         }),
     ],

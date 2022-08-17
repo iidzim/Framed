@@ -1,6 +1,5 @@
-import { BadRequestException, createParamDecorator, ExecutionContext } from "@nestjs/common";
-import { JwtService } from '@nestjs/jwt';
-import { UsersService } from "./users.service";
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { UsersService } from "../users.service";
 
 export const getUser = createParamDecorator(
 

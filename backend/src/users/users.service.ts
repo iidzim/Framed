@@ -1,14 +1,12 @@
 import { BadRequestException, Injectable, Res, UnauthorizedException } from '@nestjs/common';
-import { Profile } from './user.entity';
-import { UserRepository } from './user.repository';
-import { UserStatus } from './UserStatus.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from '../auth/jwtPayload.interface';
-import { CreateProfileDto } from './dto-users/create-profile.dto';
-import { EditProfileDto } from './dto-users/edit-profile.dto';
-import { ValidLoginDto } from './dto-users/login-profile.dto';
 import * as bcrypt from 'bcrypt';
+import { Profile } from './user.entity';
+import { UserRepository } from './user.repository';
+import { CreateProfileDto, EditProfileDto, ValidLoginDto } from './dto';
+import { UserStatus } from './enum';
+import { JwtPayload } from '../auth/jwt';
 
 @Injectable()
 export class UsersService {

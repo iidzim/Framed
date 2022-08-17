@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
-import { Profile } from "../users/user.entity";
+import { Profile } from "../users";
 import { Follower } from "./follower.entity";
 
 @EntityRepository(Follower)

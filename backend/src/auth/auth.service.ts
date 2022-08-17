@@ -1,13 +1,7 @@
 import { Injectable, Req, Res } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { UserStatus } from '../users/UserStatus.enum';
-import { CreateProfileDto } from '../users/dto-users/create-profile.dto';
-import { ValidLoginDto } from '../users/dto-users/login-profile.dto';
-import { EditProfileDto } from '../users/dto-users/edit-profile.dto';
+import { UsersService, UserStatus, CreateProfileDto, ValidLoginDto, EditProfileDto } from '../users';
 const logout = require('express-passport-logout');
 // import { logout } from 'express-passport-logout';
-// import * as dotenv from "dotenv";
-// dotenv.config({ path: `.env` });
 
 @Injectable()
 export class AuthService {

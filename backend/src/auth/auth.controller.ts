@@ -1,10 +1,7 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { CustomAuthguard } from '../users/auth.guards';
-import { CreateProfileDto } from '../users/dto-users/create-profile.dto';
-import { EditProfileDto } from '../users/dto-users/edit-profile.dto';
-import { ValidLoginDto } from '../users/dto-users/login-profile.dto';
+import { CustomAuthguard, JwtRefreshGuard } from './guards';
+import { CreateProfileDto, EditProfileDto, ValidLoginDto } from '../users/dto';
 import { AuthService } from './auth.service';
-import JwtRefreshGuard from './JwtRefresh.guard';
 
 @Controller('auth')
 export class AuthController {

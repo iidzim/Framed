@@ -1,14 +1,13 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs  from "fs";
+
 import { post } from './post.entity';
-import { PostCategory } from './category.enum';
 import { PostService } from './post.service';
-import { ContentType } from './post_type.enum';
-import { UsersService } from '../users/users.service';
-import { CreatePostDto } from './dto-posts/create-post.dto';
-import { EditPostDto } from './dto-posts/edit-post.dto';
-import { CustomAuthguard } from '../users/auth.guards';
+import { UsersService } from '../users';
+import { PostCategory, ContentType } from './enum';
+import { CreatePostDto, EditPostDto } from './dto';
+import { CustomAuthguard } from '../auth/guards';
 
 @Controller()
 //td: add AuthGuard to protect this endpoint 
