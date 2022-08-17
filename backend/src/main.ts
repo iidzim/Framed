@@ -53,11 +53,11 @@ bootstrap();
 //+ currentlly working on:
 
 //! add AuthGuard to protect endpoint ... added √ but need more testing
-	//- authguard for checking if user has access to this endpoint (valid token)
 //td: class-transformer -> post.entity ??????? still confused if i need this or not
 //= add customizer decorator to get user from token ......... getUser() return token but didnt check if token is valid !!
-//? implement refresh token
 // * email verification
+//? implement refresh token
+	//- expiresIn -> When the browsing session ends ?? even if i set it to 1 minute it still valid after 1 minute
 
 
 // add unit tests

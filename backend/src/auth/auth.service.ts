@@ -42,8 +42,8 @@ export class AuthService {
 		return await this.userService.isValid(editDto);
 	}
 
-	async getJwtAccessToken(id: number): Promise<string> {
-		const user = await this.userService.getUser(id);
+	async getJwtAccessToken(refresh_token: string, id: number): Promise<string> {
+		const user = await this.userService.verifyRefreshToken(refresh_token, id);
 		return await this.userService.GetAccessToken(user);
 	}
 }

@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nes
 import { CustomAuthguard, JwtRefreshGuard } from './guards';
 import { CreateProfileDto, EditProfileDto, ValidLoginDto } from '../users/dto';
 import { AuthService } from './auth.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -48,7 +49,7 @@ export class AuthController {
 		@Req() req,
 		@Res({passthrough: true}) res,
 	) {
-		const access_token = await this.authService.getJwtAccessToken(req.user.id);
+		const access_token = await this.authService.getJwtAccessToken(req.cookies.connect_fre, req.user.id);
 		res.cookie('connect_sid', [access_token], { httpOnly: true });
 		return req.user;
 	}
