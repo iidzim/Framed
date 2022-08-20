@@ -59,6 +59,7 @@ bootstrap();
 //? implement refresh token
 	//- expiresIn -> When the browsing session ends ?? even if i set it to 1 minute it still valid after 1 minute
 
+// use database index -> Indexes help in filtering data faster as the data is stored in a predefined order based on some key columns.
 
 // add unit tests
 // learn more about graphql - redis

@@ -19,6 +19,9 @@ export class Profile extends BaseEntity{
 	@Column({ unique: true })
 	email: string;
 
+	@Column({ default: false })
+	isEmailConfirmed: boolean;
+
 	@Column()
 	avatar: string;
 
