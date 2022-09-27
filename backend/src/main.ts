@@ -17,26 +17,26 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
 	app.use(cookieParser());
-	console.log(
-		"main >> " +
-		process.env.FRONTEND_HOST +
-		" " +
-		process.env.HOST +
-		" " +
-		process.env.DB_USER +
-		" " +
-		process.env.DB_PASSWORD +
-		" " +
-		process.env.DB_NAME +
-		" " +
-		process.env.JWT_ACCESS_TOKEN_SECRET +
-		" " +
-		process.env.JWT_ACCESS_TOKEN_EXPIRES_IN	+
-		" " +
-		process.env.JWT_REFRESH_TOKEN_SECRET +
-		" " +
-		process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
-	);
+	// console.log('\e[0;34m',
+	// 	"main >> " +
+	// 	process.env.FRONTEND_HOST +
+	// 	" " +
+	// 	process.env.HOST +
+	// 	" " +
+	// 	process.env.DB_USER +
+	// 	" " +
+	// 	process.env.DB_PASSWORD +
+	// 	" " +
+	// 	process.env.DB_NAME +
+	// 	" " +
+	// 	process.env.JWT_ACCESS_TOKEN_SECRET +
+	// 	" " +
+	// 	process.env.JWT_ACCESS_TOKEN_EXPIRES_IN	+
+	// 	" " +
+	// 	process.env.JWT_REFRESH_TOKEN_SECRET +
+	// 	" " +
+	// 	process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
+	// );
 	// app.enableCors({origin: 'http://localhost:3000', credentials: true});
 	// await app.listen(3001);
 	app.enableCors({ origin: process.env.FRONTEND_HOST, credentials: true });
@@ -53,7 +53,7 @@ bootstrap();
 //+ currentlly working on:
 
 //! add AuthGuard to protect endpoint ... added √ but need more testing
-//td: class-transformer -> post.entity ??????? still confused if i need this or not
+//td: class-transformer -> post.entity ??????? still confused if i need one or not
 //= add customizer decorator to get user from token ......... getUser() return token but didnt check if token is valid !!
 // * email verification
 //? implement refresh token
@@ -64,3 +64,5 @@ bootstrap();
 // add unit tests
 // learn more about graphql - redis
 // https://virtualgallery.w3spaces.com/ 
+
+//! bash-color https://gist.github.com/iamnewton/8754917

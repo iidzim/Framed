@@ -49,7 +49,7 @@ export class AuthController {
 		@Req() req,
 		@Res({passthrough: true}) res,
 	) {
-		const access_token = await this.authService.getJwtAccessToken(req.cookies.connect_fre, req.user.id);
+		const access_token = await this.authService.getJwtAccessToken(req.cookies.connect_ref, req.user.id);
 		res.cookie('connect_sid', [access_token], { httpOnly: true });
 		return req.user;
 	}

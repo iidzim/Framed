@@ -32,7 +32,7 @@ export class AuthService {
 		await this.userService.removeRefreshToken(user_token.id);
 		await logout();
 		await res.clearCookie('connect_sid');
-		await res.clearCookie('connect_fre');
+		await res.clearCookie('connect_ref');
 		console.log('logout');
 		//? redirection in frontend to signin page
 		res.redirect('http://localhost:3000');

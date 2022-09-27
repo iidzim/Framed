@@ -22,12 +22,12 @@ export class UsersController {
 
 	@Get('profile')
 	async getMyProfile(
-		// @Req() req: Request,
-		@getUser() token,
+		@Req() req: Request,
+		// @getUser() token,
 	): Promise<any> {
 		// console.log(req);
-		// const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
-		const user_token = await this.usersService.verifyAccessToken(token);
+		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
+		// const user_token = await this.usersService.verifyAccessToken(token);
 		const user = await this.usersService.getUser(user_token.id);
 		const following = await this.followerService.getFollowing(user);
 		const followers = await this.followerService.getFollowers(user.id);

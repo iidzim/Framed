@@ -7,7 +7,7 @@ import { JwtPayload } from "./jwtPayload.interface";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-access-token') {
 	constructor(
-		private readonly userService: UsersService,
+		// private readonly userService: UsersService,
 		private readonly userRepository: UserRepository,
 	) {
 		super({
@@ -31,15 +31,15 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-access-token') 
 		console.log('++++++ '+payload);
 		const { id } = payload;
 		console.log('id = ' + id);
-		let user;
+		// let user;
 		try {
 			// user = await this.userService.getUser(id);
 			const user = await this.userRepository.findOne({id});
+			return user;
 		} catch (error) {
 			console.log('---> '+error);
 			return null;
 		}
-		return user;
 	}
 }
 

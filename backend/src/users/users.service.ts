@@ -74,7 +74,7 @@ export class UsersService {
 		await this.updateStatus(user.id, UserStatus.ONLINE);
 		// set cookie for new user with token
 		res.cookie('connect_sid', [access_token], { httpOnly: true });
-		res.cookie('connect_fre', [refresh_token], { httpOnly: true });
+		res.cookie('connect_ref', [refresh_token], { httpOnly: true });
 		user.password = undefined;
 		return user;
 	}
@@ -97,7 +97,7 @@ export class UsersService {
 		await this.updateStatus(user.id, UserStatus.ONLINE);
 		// set cookie for logged in user with token
 		res.cookie('connect_sid', [acess_token], { httpOnly: true });
-		res.cookie('connect_fre', [refresh_token], { httpOnly: true });
+		res.cookie('connect_ref', [refresh_token], { httpOnly: true });
 		user.password = undefined;
 		return user;
 	}

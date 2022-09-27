@@ -14,3 +14,5 @@ export enum PostCategory {
     WALLPAPER = 'wallpaper',
     OTHER = 'other',
 }
+// i have clicked the link
+// resend verification email
