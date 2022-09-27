@@ -7,6 +7,7 @@ import { UserRepository } from './user.repository';
 import { CreateProfileDto, EditProfileDto, ValidLoginDto } from './dto';
 import { UserStatus } from './enum';
 import { JwtPayload } from '../auth/jwt';
+import { Response } from 'express';
 
 @Injectable()
 export class UsersService {
@@ -61,11 +62,11 @@ export class UsersService {
 	}
 
 	async removeRefreshToken(id: number): Promise<any> {
-		return this.userRepository.update(id, {refresh_token: null });
+		return await this.userRepository.update(id, {refresh_token: null });
 	}
 
 	async register(
-		@Res({passthrough: true}) res,
+		@Res({passthrough: true}) res: Response,
 		profileDto: CreateProfileDto
 	): Promise<Profile> {
 		const user = await this.userRepository.signUp(profileDto);
@@ -77,7 +78,7 @@ export class UsersService {
 		res.cookie('connect_ref', [refresh_token], { httpOnly: true });
 		user.password = undefined;
 		return user;
-	}
+	} //+ add try catch block to be sure exception is handled and status code is 400
 
 	async login(
 		@Res({passthrough: true}) res,
@@ -121,7 +122,7 @@ export class UsersService {
 		try {
 			await user.save();
 		} catch (error) {
-			console.log('updateUsername -> duplicated !! ' + error.code);
+			// console.log('updateUsername -> duplicated !! ' + error.code);
 			if (error.code === '23505') {
 				throw new BadRequestException('Username already exists');
 			}
@@ -153,7 +154,7 @@ export class UsersService {
 			if (nameDup.length > 0)
 				throw new BadRequestException('username already exists');
 		}
-		else if (email) {
+		if (email) {
 			const emailDup = await this.userRepository.findAndCount({ where : {email: email} });
 			if (emailDup.length > 0)
 				throw new BadRequestException('email already exists');

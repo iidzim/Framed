@@ -1,5 +1,5 @@
 import { Injectable, Req, Res } from '@nestjs/common';
-import { UsersService, UserStatus, CreateProfileDto, ValidLoginDto, EditProfileDto } from '../users';
+import { UsersService, UserStatus, CreateProfileDto, ValidLoginDto, EditProfileDto, Profile } from '../users';
 const logout = require('express-passport-logout');
 // import { logout } from 'express-passport-logout';
 
@@ -12,14 +12,14 @@ export class AuthService {
 	async register(
 		@Res({passthrough: true}) res,
 		profileDto: CreateProfileDto
-	): Promise<any> {
+	): Promise<Profile> {
 		return await this.userService.register(res, profileDto);
 	}
 
 	async login(
 		@Res({passthrough: true}) res,
 		loginDto: ValidLoginDto
-	): Promise<any> {
+	): Promise<Profile> {
 		return await this.userService.login(res, loginDto);
 	}
 

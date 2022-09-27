@@ -22,7 +22,7 @@ export class UsersController {
 
 	@Get('profile')
 	async getMyProfile(
-		@Req() req: Request,
+		@Req() req,
 		// @getUser() token,
 	): Promise<any> {
 		// console.log(req);
@@ -63,7 +63,7 @@ export class UsersController {
 	@Post('edit')
 	@UseInterceptors(FileInterceptor('avatar'))
 	async editUsername(
-		@Req() req: Request,
+		@Req() req,
 		@Body() editDto : EditProfileDto,
 		@UploadedFile() avatar: Express.Multer.File,
 	): Promise<Profile> {
