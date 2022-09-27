@@ -1,19 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
-import { CreateProfileDto, UserRepository, UsersService, ValidLoginDto } from '../users';
+import { CreateProfileDto, ValidLoginDto } from '../users';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
-import { JwtService } from '@nestjs/jwt';
 
 describe('AuthController', () => {
-	let controller: AuthController(
-		new AuthService(
-			new UsersService(
-				new UserRepository(),
-				new JwtService(),
-			)
-		)
-	);
+	let controller: AuthController;
 
 	const requestMock = {} as unknown as Request;
 
@@ -23,28 +15,34 @@ describe('AuthController', () => {
 	} as unknown as Response;
 	
 	const profileDtoMock = {
-		fullname: '',
-		username: '',
-		email: '',
-		password: '',
+		fullname: 'ikram idzim',
+		username: 'ikrax',
+		email: 'iidzim3@student.1337.ma',
+		password: '123456',
 	} as CreateProfileDto;
 
 	const loginDtoMock = {
-		username: '',
-		password: '',
+		username: 'ikrax',
+		password: '123456',
 	} as unknown as ValidLoginDto;
 
   beforeEach(async () => {
 	const module: TestingModule = await Test.createTestingModule({
 	  controllers: [AuthController],
+	  providers: [
+		{
+			
+
+	  	}
+	],
 	}).compile();
 
 	controller = module.get<AuthController>(AuthController);
   });
 
-  it('should be defined', () => {
-	expect(controller).toBeDefined();
-  });
+//   it('should be defined', () => {
+// 	expect(controller).toBeDefined();
+//   });
 
   describe('register', () => {
 	it('should return user profile', async () => {
@@ -52,19 +50,19 @@ describe('AuthController', () => {
 		profileDtoMock.username = 'test'; //!
 		profileDtoMock.email = 'test'; //!
 		profileDtoMock.password = 'test'; //!
-		controller.register(responseMock, profileDtoMock);
+		await controller.register(responseMock, profileDtoMock);
 		expect(responseMock.cookie).toHaveBeenCalled();
 		expect(responseMock.status).toHaveBeenCalledWith(200);
 	});
 	it('should return a status code of 400', async () => {
-		controller.register(responseMock, profileDtoMock);
+		await controller.register(responseMock, profileDtoMock);
 		expect(responseMock.status).toHaveBeenCalledWith(400);
 	});
   })
 
 //     describe('login', () => {
 // 	it('should return user profile', async () => {
-// 		controller.login(responseMock, loginDtoMock);
+// 		await controller.login(responseMock, loginDtoMock);
 // 		// expect(responseMock).toHaveBeenCalled();
 // 		expect(responseMock.status).toHaveBeenCalledWith(200);
 // 	});
@@ -72,7 +70,7 @@ describe('AuthController', () => {
 
 //     describe('logout', () => {
 // 	it('should return user profile', async () => {
-// 		controller.logout(requestMock, responseMock);
+// 		await controller.logout(requestMock, responseMock);
 // 		// expect(responseMock).toHaveBeenCalled();
 // 		expect(responseMock.status).toHaveBeenCalledWith(200);
 // 	});

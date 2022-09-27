@@ -11,7 +11,7 @@ import { Profile } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller()
-@UseGuards(CustomAuthguard)
+// @UseGuards(CustomAuthguard)
 //td: add AuthGuard to protect this endpoint
 export class UsersController {
 	constructor(

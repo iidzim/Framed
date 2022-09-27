@@ -5,7 +5,7 @@ import { Follower } from './follower.entity';
 import { FollowersService } from './followers.service';
 
 @Controller()
-@UseGuards(CustomAuthguard)
+// @UseGuards(CustomAuthguard)
 //td: add AuthGuard to protect this endpoint
 export class FollowersController {
 

@@ -23,7 +23,7 @@ export class PostController {
 		return await this.postService.getPosts();
 	}
 	
-	@UseGuards(CustomAuthguard)
+	// @UseGuards(CustomAuthguard)
 	@Get('posts/:id')
 	async getPostById(
 		@Req() req,
@@ -42,7 +42,7 @@ export class PostController {
 		return await this.postService.getPosts();
 	}
 
-	@UseGuards(CustomAuthguard)
+	// @UseGuards(CustomAuthguard)
 	@Get('posts')
 	async getUserPosts(
 		@Req() req,
@@ -50,7 +50,7 @@ export class PostController {
 		return await this.postService.getUserPosts(req.user);
 	}
 
-	@UseGuards(CustomAuthguard)
+	// @UseGuards(CustomAuthguard)
 	@HttpCode(200)
 	@Post('posts/create')
 	@UseInterceptors(FileInterceptor('image'))
@@ -70,7 +70,7 @@ export class PostController {
 //& only post owner can see post options (edit / delete)
 //& check if the logged in user is the post owner before allowing edit / delete
 
-	@UseGuards(CustomAuthguard)
+	// @UseGuards(CustomAuthguard)
 	@Patch('update/:id')
 	async editPost(
 		@Req() req,
@@ -81,7 +81,7 @@ export class PostController {
 		return await this.postService.editPost(user, editDto);
 	}
 
-	@UseGuards(CustomAuthguard)
+	// @UseGuards(CustomAuthguard)
 	@Delete('remove/:id')
 	async deletePost(
 		@Req() req,
