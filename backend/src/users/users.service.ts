@@ -70,6 +70,7 @@ export class UsersService {
 		profileDto: CreateProfileDto
 	): Promise<Profile> {
 		const user = await this.userRepository.signUp(profileDto);
+		// console.log(user.id, user.username);
 		const access_token = this.GetAccessToken(user);
 		const refresh_token = await this.GetRefreshToken(user);
 		await this.updateStatus(user.id, UserStatus.ONLINE);

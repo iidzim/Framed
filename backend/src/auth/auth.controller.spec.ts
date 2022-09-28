@@ -1,79 +1,83 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { CreateProfileDto, ValidLoginDto } from '../users';
-import { Response } from 'express';
-import { AuthService } from './auth.service';
+// import { Test, TestingModule } from '@nestjs/testing';
+// import { AuthController } from './auth.controller';
+// import { CreateProfileDto, ValidLoginDto } from '../users';
+// import { Response } from 'express';
+// import { AuthService } from './auth.service';
 
-describe('AuthController', () => {
-	let controller: AuthController;
+// describe('AuthController', () => {
+// 	let controller: AuthController;
 
-	const requestMock = {} as unknown as Request;
+// 	const requestMock = {} as unknown as Request;
 
-	const responseMock = {
-		cookie: jest.fn((x) => x),
-		status: jest.fn((x) => x),
-	} as unknown as Response;
+// 	const responseMock = {
+// 		cookie: jest.fn((x) => x),
+// 		status: jest.fn((x) => x),
+// 	} as unknown as Response;
 	
-	const profileDtoMock = {
-		fullname: 'ikram idzim',
-		username: 'ikrax',
-		email: 'iidzim3@student.1337.ma',
-		password: '123456',
-	} as CreateProfileDto;
+// 	const profileDtoMock = {
+// 		fullname: 'ikram idzim',
+// 		username: 'ikrax',
+// 		email: 'iidzim3@student.1337.ma',
+// 		password: '123456',
+// 	} as CreateProfileDto;
 
-	const loginDtoMock = {
-		username: 'ikrax',
-		password: '123456',
-	} as unknown as ValidLoginDto;
+// 	const loginDtoMock = {
+// 		username: 'ikrax',
+// 		password: '123456',
+// 	} as unknown as ValidLoginDto;
 
-  beforeEach(async () => {
-	const module: TestingModule = await Test.createTestingModule({
-	  controllers: [AuthController],
-	  providers: [
-		{
-			
+//   beforeEach(async () => {
+// 	const module: TestingModule = await Test.createTestingModule({
+// 	  controllers: [AuthController],
+// 	  providers: [
+// 		{
+// 			provide: AuthService,
+// 			useValue: {
+// 				login: jest.fn((x) => x),
+// 				register: jest.fn((x) => x),
+// 				logout: jest.fn((x) => x),
+// 			},
+// 	  	}
+// 	  ],
+// 	}).compile();
 
-	  	}
-	],
-	}).compile();
-
-	controller = module.get<AuthController>(AuthController);
-  });
-
-//   it('should be defined', () => {
-// 	expect(controller).toBeDefined();
+// 	controller = module.get<AuthController>(AuthController);
 //   });
 
-  describe('register', () => {
-	it('should return user profile', async () => {
-		profileDtoMock.fullname = 'test'; //! how to use mocking here? working with data from db
-		profileDtoMock.username = 'test'; //!
-		profileDtoMock.email = 'test'; //!
-		profileDtoMock.password = 'test'; //!
-		await controller.register(responseMock, profileDtoMock);
-		expect(responseMock.cookie).toHaveBeenCalled();
-		expect(responseMock.status).toHaveBeenCalledWith(200);
-	});
-	it('should return a status code of 400', async () => {
-		await controller.register(responseMock, profileDtoMock);
-		expect(responseMock.status).toHaveBeenCalledWith(400);
-	});
-  })
+// //   it('should be defined', () => {
+// // 	expect(controller).toBeDefined();
+// //   });
 
-//     describe('login', () => {
+//   describe('register', () => {
 // 	it('should return user profile', async () => {
-// 		await controller.login(responseMock, loginDtoMock);
-// 		// expect(responseMock).toHaveBeenCalled();
+// 		profileDtoMock.fullname = 'test'; //! how to use mocking here? working with data from db
+// 		profileDtoMock.username = 'test'; //!
+// 		profileDtoMock.email = 'test'; //!
+// 		profileDtoMock.password = 'test'; //!
+// 		await controller.register(responseMock, profileDtoMock);
+// 		expect(responseMock.cookie).toHaveBeenCalled();
 // 		expect(responseMock.status).toHaveBeenCalledWith(200);
+// 	});
+// 	it('should return a status code of 400', async () => {
+// 		await controller.register(responseMock, profileDtoMock);
+// 		expect(responseMock.status).toHaveBeenCalledWith(400);
 // 	});
 //   })
 
-//     describe('logout', () => {
-// 	it('should return user profile', async () => {
-// 		await controller.logout(requestMock, responseMock);
-// 		// expect(responseMock).toHaveBeenCalled();
-// 		expect(responseMock.status).toHaveBeenCalledWith(200);
-// 	});
-//   })
+// //     describe('login', () => {
+// // 	it('should return user profile', async () => {
+// // 		await controller.login(responseMock, loginDtoMock);
+// // 		// expect(responseMock).toHaveBeenCalled();
+// // 		expect(responseMock.status).toHaveBeenCalledWith(200);
+// // 	});
+// //   })
 
-});
+// //     describe('logout', () => {
+// // 	it('should return user profile', async () => {
+// // 		await controller.logout(requestMock, responseMock);
+// // 		// expect(responseMock).toHaveBeenCalled();
+// // 		expect(responseMock.status).toHaveBeenCalledWith(200);
+// // 	});
+// //   })
+
+// });

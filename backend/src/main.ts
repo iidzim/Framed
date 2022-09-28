@@ -55,9 +55,15 @@ bootstrap();
 //! add AuthGuard to protect endpoint ... added √ but need more testing
 //td: class-transformer -> post.entity ??????? still confused if i need one or not
 //= add customizer decorator to get user from token ......... getUser() return token but didnt check if token is valid !!
-// * email verification
 //? implement refresh token
 	//- expiresIn -> When the browsing session ends ?? even if i set it to 1 minute it still valid after 1 minute
+// * email verification
+//& add pagination
+//td: unit testing
+//= build chatbot
+// add google auth later
+
+
 
 // use database index -> Indexes help in filtering data faster as the data is stored in a predefined order based on some key columns.
 
