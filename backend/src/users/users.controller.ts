@@ -12,7 +12,7 @@ import { UsersService } from './users.service';
 
 @Controller()
 // @UseGuards(CustomAuthguard)
-//td: add AuthGuard to protect this endpoint
+// add AuthGuard to protect this endpoint
 export class UsersController {
 	constructor(
 	   private readonly usersService: UsersService,

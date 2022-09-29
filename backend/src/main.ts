@@ -72,3 +72,6 @@ bootstrap();
 // https://virtualgallery.w3spaces.com/ 
 
 //! bash-color https://gist.github.com/iamnewton/8754917
+
+
+//= express > https://dev.to/franciscomendes10866/testing-express-api-with-jest-and-supertest-3gf

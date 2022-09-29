@@ -74,3 +74,6 @@ describe('UsersService', () => {
 
 
 // const newUser = thisuserRepository.create({ ...profileDto, password});
+//- describe() -> groups together a set of individual tests related to it.
+//- test() or it() -> is a single test case.
+//- expect() -> is a matcher that is used to check the value of an expression.
