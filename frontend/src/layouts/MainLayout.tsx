@@ -24,7 +24,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   return (
     <>
       <Head>
-        <title>{exactTitle ? title : `${title} | PicsEnergy`}</title>
+        <title>{exactTitle ? title : `${title} | WeFrame`}</title>
       </Head>
       <Navbar />
       <main className="flex h-full min-h-screen w-full justify-center">

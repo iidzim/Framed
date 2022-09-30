@@ -8,8 +8,8 @@ const Home: NextPage = () => {
   return (
     <MainLayout title="Home">
       <MaxWidthContainer>
-        <div className="grid h-full w-full grid-cols-1 gap-6 px-2 sm:grid-cols-2 md:grid-cols-3">
-          {Array.from({ length: 10 }).map((_, index) => (
+        <div className="grid h-full w-full grid-cols-1 gap-6 px-2 py-16 sm:grid-cols-2 md:grid-cols-3">
+          {Array.from({ length: 12 }).map((_, index) => (
             <ImageCard
               key={index}
               href={`/p/${index}`}

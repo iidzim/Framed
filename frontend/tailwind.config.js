@@ -14,6 +14,9 @@ module.exports = {
           DEFAULT: "#000000",
         },
       },
+      fontFamily: {
+        primary: ["Comfortaa", "sans-serif"],
+      }
     },
   },
   plugins: [],
