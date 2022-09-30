@@ -11,5 +11,5 @@ A web application that provides beautiful, free images and photos that you can d
 * instagram/google auth
 
 ## Authors
-* Frontend -> [f0lio](https://github.com/f0lio)
-* Backend -> [iidzim](https://github.com/iidzim)
+* Frontend by [f0lio](https://github.com/f0lio)
+* Backend by [iidzim](https://github.com/iidzim)
