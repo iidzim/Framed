@@ -42,29 +42,3 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-access-token') 
 		}
 	}
 }
-
-/*
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(
-        @InjectRepository(PlayerRepository)
-        private playerRepository: PlayerRepository,
-    ) {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: 'pingpong',
-        });
-    }
-
-    async validate(payload: JwtPayload): Promise<Player> {
-        const { username } = payload;
-        const user = await this.playerRepository.findOne({username});
-        if (!user) {
-            throw new UnauthorizedException();
-        }
-        return user;
-    }
-}
-Footer
-
-*/

@@ -23,8 +23,7 @@ export class FollowersService {
 	}
 
 	async follow(user: Profile, id: number): Promise<Follower> {
-		const following = await this.userService.getUser(id);
-		return await this.followerRepository.follow(user, following);
+		return await this.followerRepository.follow(user, id);
 	}
 
 	async unfollow(user: Profile, id: number): Promise<any> {

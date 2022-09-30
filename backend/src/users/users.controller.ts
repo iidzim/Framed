@@ -78,7 +78,7 @@ export class UsersController {
 		}
 		if (old_password != null && new_password != null) {
 		    await this.usersService.updatePassword(user.username, old_password, new_password);
-		}
+		} //! remove
 		if (fileName != null) {
 			const avatarPath = process.cwd() + '/public/avatar/' + fileName;
 			fs.writeFileSync(avatarPath, avatar.buffer);

@@ -17,3 +17,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
 	logging: false,
 	autoLoadEntities: true,
 };
+
+//- Setting synchronize makes sure your entities will be synced with the database, every time you run the application.
+//- Setting logging to true will log all the queries and errors you make to the console.
+//- Setting autoLoadEntities to true will automatically load all the entities in the entities array.

@@ -13,15 +13,18 @@ export class FollowerRepository extends Repository<Follower> {
         return await this.find({ where: { sender: user } });
     }
 
-    async follow(user: Profile, following: Profile): Promise<Follower> {
+    async follow(
+        user: Profile,
+        following_id: number
+    ): Promise<Follower> {
 
-        const exist = await this.findOne({ where: { sender: user, receiver: following.id } });
+        const exist = await this.findOne({ where: { sender: user, receiver: following_id } });
         if (exist) {
             return exist;
         }
         const follower = new Follower();
         follower.sender = user;
-        follower.receiver = following.id;
+        follower.receiver = following_id;
         await follower.save();
         return follower;
     }

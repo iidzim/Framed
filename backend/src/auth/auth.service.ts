@@ -1,7 +1,7 @@
 import { Injectable, Req, Res } from '@nestjs/common';
 import { UsersService, UserStatus, CreateProfileDto, ValidLoginDto, EditProfileDto, Profile } from '../users';
+import { Request, Response } from 'express';
 const logout = require('express-passport-logout');
-// import { logout } from 'express-passport-logout';
 
 @Injectable()
 export class AuthService {
@@ -10,21 +10,24 @@ export class AuthService {
 	) {}
 
 	async register(
-		@Res({passthrough: true}) res,
-		profileDto: CreateProfileDto
+		@Res({passthrough: true}) res: Response,
+		profileDto: CreateProfileDto,
 	): Promise<Profile> {
 		return await this.userService.register(res, profileDto);
 	}
 
 	async login(
 		@Res({passthrough: true}) res,
-		loginDto: ValidLoginDto
+		loginDto: ValidLoginDto,
 	): Promise<Profile> {
 		return await this.userService.login(res, loginDto);
 	}
 
 	// async logout(@Req() req, @Res({passthrough: true}) res): Promise<any> {
-	async logout(@Req() req, @Res() res): Promise<any> {
+	async logout(
+		@Req() req: Request,
+		@Res() res: Response,
+	): Promise<any> {
 
 		const user_token = await this.userService.verifyAccessToken(req.cookies.connect_sid);
 		console.log('>> ' + user_token.username);
@@ -42,7 +45,10 @@ export class AuthService {
 		return await this.userService.isValid(editDto);
 	}
 
-	async getJwtAccessToken(refresh_token: string, id: number): Promise<string> {
+	async getJwtAccessToken(
+		refresh_token: string,
+		id: number
+	): Promise<string> {
 		const user = await this.userService.verifyRefreshToken(refresh_token, id);
 		return await this.userService.GetAccessToken(user);
 	}

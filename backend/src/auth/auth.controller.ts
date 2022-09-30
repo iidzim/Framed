@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nes
 import { CustomAuthguard, JwtRefreshGuard } from './guards';
 import { CreateProfileDto, EditProfileDto, ValidLoginDto, Profile} from '../users';
 import { AuthService } from './auth.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -13,8 +13,8 @@ export class AuthController {
 	@HttpCode(200)
 	@Post('register')
 	async register(
-		@Res({passthrough: true}) res: Response,
 		@Body() profileDto :CreateProfileDto,
+		@Res({passthrough: true}) res: Response,
 	): Promise<Profile> {
 		return await this.authService.register(res, profileDto);
 	}
@@ -22,8 +22,8 @@ export class AuthController {
 	@HttpCode(200)
 	@Post('login')
 	async login(
-		@Res({passthrough: true}) res,
 		@Body() loginDto: ValidLoginDto,
+		@Res({passthrough: true}) res: Response,
 	): Promise<Profile>  {
 		return await this.authService.login(res, loginDto);
 	}
@@ -31,7 +31,10 @@ export class AuthController {
 	@HttpCode(200)
 	@UseGuards(CustomAuthguard)
 	@Get('logout')
-	async logout(@Req() req, @Res({passthrough: true}) res): Promise<any>  {
+	async logout(
+		@Req() req: Request,
+		@Res({passthrough: true}) res: Response,
+	): Promise<any>  {
 		return await this.authService.logout(req, res);
 	}
 
