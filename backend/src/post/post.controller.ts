@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs  from "fs";
+import { Request } from 'express';
 
 import { post } from './post.entity';
 import { PostService } from './post.service';
@@ -18,15 +19,15 @@ export class PostController {
 		private readonly usersService: UsersService,
 	) {}
 
-	@Get('posts') //& to be removed after testing
-	async getPosts(@Req() req): Promise<post[]> {
+	@Get('posts') //& to be removed later
+	async getPosts(@Req() req: Request): Promise<post[]> {
 		return await this.postService.getPosts();
 	}
-	
-	// @UseGuards(CustomAuthguard)
+
+	@UseGuards(CustomAuthguard)
 	@Get('posts/:id')
 	async getPostById(
-		@Req() req,
+		// @Req() req: Request,
 		@Param('id', ParseIntPipe) post_id: number,
 	): Promise<post> {
 		return await this.postService.getPostById(post_id);
@@ -34,7 +35,7 @@ export class PostController {
 
 	@Get('explore/:category')
 	async getPostByCategory(
-		@Req() req,
+		// @Req() req: Request,
 		@Param('category') category: PostCategory,
 	): Promise<post[]> {
 		if (category != null)
@@ -42,20 +43,23 @@ export class PostController {
 		return await this.postService.getPosts();
 	}
 
-	// @UseGuards(CustomAuthguard)
+	@UseGuards(CustomAuthguard)
 	@Get('posts')
 	async getUserPosts(
-		@Req() req,
+		@Req() req: Request,
 	): Promise<post[]> {
-		return await this.postService.getUserPosts(req.user);
-	}
+		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
+		const user = await this.usersService.getUser(user_token.id);
+		return await this.postService.getUserPosts(user);
+		// return await this.postService.getUserPosts(req.user);
+	} //? how to inject user object into req?
 
-	// @UseGuards(CustomAuthguard)
+	@UseGuards(CustomAuthguard)
 	@HttpCode(200)
 	@Post('posts/create')
 	@UseInterceptors(FileInterceptor('image'))
 	async createPost(
-		@Req() req,
+		@Req() req: Request,
 		@UploadedFile() image: Express.Multer.File,
 		@Body() postDto: CreatePostDto
 	): Promise<post> {
@@ -70,10 +74,10 @@ export class PostController {
 //& only post owner can see post options (edit / delete)
 //& check if the logged in user is the post owner before allowing edit / delete
 
-	// @UseGuards(CustomAuthguard)
-	@Patch('update/:id')
+	@UseGuards(CustomAuthguard)
+	@Patch('update')
 	async editPost(
-		@Req() req,
+		@Req() req: Request,
 		@Body() editDto: EditPostDto,
 	): Promise<post> {
 		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
@@ -81,10 +85,10 @@ export class PostController {
 		return await this.postService.editPost(user, editDto);
 	}
 
-	// @UseGuards(CustomAuthguard)
+	@UseGuards(CustomAuthguard)
 	@Delete('remove/:id')
 	async deletePost(
-		@Req() req,
+		@Req() req: Request,
 		@Param('id', ParseIntPipe) post_id: number
 	): Promise<any> {
 		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);

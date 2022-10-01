@@ -11,7 +11,7 @@ import { Profile } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller()
-// @UseGuards(CustomAuthguard)
+@UseGuards(CustomAuthguard)
 // add AuthGuard to protect this endpoint
 export class UsersController {
 	constructor(
@@ -32,13 +32,15 @@ export class UsersController {
 		const following = await this.followerService.getFollowing(user);
 		const followers = await this.followerService.getFollowers(user.id);
 		const posts = await this.postService.getUserPosts(user);
-		const profile = {
-			"user": user,
-			"following": following,
-			"followers": followers,
-			"posts": posts,
-		}
-		return profile;
+		Promise.all([following, followers, posts]).then(() => {
+			const profile = {
+				"user": user,
+				"following": following,
+				"followers": followers,
+				"posts": posts,
+			}
+			return profile;
+		});
 	}
 
 	@Get('profile/:id')

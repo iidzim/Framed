@@ -31,15 +31,17 @@ export class PostService {
     }
 
     async createPost(@Req() req, postDto: CreatePostDto): Promise<post> {
-        return await this.postRepository.createPost(req.user, postDto);
+        const user = req.user;
+        return await this.postRepository.createPost(user, postDto);
     }
 
     async editPost(@Req() req, editDto: EditPostDto): Promise<post> {
-        return await this.postRepository.editPost(req.user, editDto);
+        const owner = req.user;
+        return await this.postRepository.editPost(owner, editDto);
     }
 
-    async deletePost(@Req() req, post_id: number): Promise<any> {
-        const owner = req.user;
+    async deletePost(owner: Profile, post_id: number): Promise<any> {
+        // const owner = req.user;
         const post = await this.postRepository.findOne({ where: { id: post_id} });
 		if (post.createdBy.id !== owner.id) {
 			throw new UnauthorizedException("You are not allowed to edit this post");

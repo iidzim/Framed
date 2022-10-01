@@ -8,7 +8,7 @@ export class EditPostDto {
     @IsNumber()
     post_id: number;
 
-	@ApiProperty()
+	@ApiProperty({ type: [String] })
 	@IsNotEmpty()
 	@Matches(
 		/^[a-zA-Z0-9_-]*$/,
