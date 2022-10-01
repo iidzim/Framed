@@ -1,6 +1,6 @@
 ## About
 
-WeFrame is an online platform dedicated to photographers. You can create your own profile and start exploring, discovering, and sharing with others.
+Framed is an online platform dedicated to photographers. You can create your own profile and start exploring, discovering, and sharing with others.
 
 
 ## Technologies
