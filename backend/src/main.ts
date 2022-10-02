@@ -29,18 +29,12 @@ async function bootstrap() {
 	// 	" " +
 	// 	process.env.DB_NAME +
 	// 	" " +
-	// 	process.env.JWT_ACCESS_TOKEN_SECRET +
-	// 	" " +
-	// 	process.env.JWT_ACCESS_TOKEN_EXPIRES_IN	+
-	// 	" " +
-	// 	process.env.JWT_REFRESH_TOKEN_SECRET +
-	// 	" " +
-	// 	process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
+	// 	process.env.JWT_SECRET
 	// );
-	// app.enableCors({origin: 'http://localhost:3000', credentials: true});
-	// await app.listen(3001);
-	app.enableCors({ origin: process.env.FRONTEND_HOST, credentials: true });
-	await app.listen(process.env.PORT || 3030);
+	app.enableCors({origin: process.env.FRONTEND_HOST, credentials: true});
+	await app.listen(process.env.PORT || 3001);
+	// app.enableCors({ origin: process.env.FRONTEND_HOST, credentials: true });
+	// await app.listen(process.env.PORT || 3030);
 }
 bootstrap();
 

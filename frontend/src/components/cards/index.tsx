@@ -10,6 +10,7 @@ import { IAuthor } from "interfaces";
 
 interface ImageCardProps {
   imageUrl: string;
+  href: string;
   imageAlt: string;
   author?: IAuthor;
   noAnimation?: boolean;
@@ -17,7 +18,7 @@ interface ImageCardProps {
 
 export const ImagePreviewCard = ({ imageUrl, imageAlt }: ImageCardProps) => {
   return (
-    <figure className="relative h-full w-full">
+    <div className="relative h-full w-full">
       <Image
         className={classNames("cursor-pointer rounded-sm")}
         src={imageUrl}
@@ -27,27 +28,30 @@ export const ImagePreviewCard = ({ imageUrl, imageAlt }: ImageCardProps) => {
         layout="fill"
         objectFit="contain"
       />
-    </figure>
+    </div>
   );
 };
 
 const ImageCard = ({
   imageUrl,
+  href,
   imageAlt,
   author,
   noAnimation = false,
 }: ImageCardProps) => {
   return (
-    <figure className="group relative flex h-full items-end">
-      <img
-        className={classNames("cursor-pointer rounded-sm duration-200", {
-          "group-hover:brightness-75": !noAnimation,
-        })}
-        src={imageUrl}
-        alt={imageAlt}
-        width="100%"
-        height="100%"
-      />
+    <div className="group relative flex h-full items-end">
+      <Link href={href}>
+        <img
+          className={classNames("cursor-pointer rounded-sm duration-200", {
+            "group-hover:brightness-75": !noAnimation,
+          })}
+          src={imageUrl}
+          alt={imageAlt}
+          width="100%"
+          height="100%"
+        />
+      </Link>
       <div className="absolute w-full">
         {author && noAnimation === false && (
           <Link
@@ -70,7 +74,7 @@ const ImageCard = ({
           </Link>
         )}
       </div>
-    </figure>
+    </div>
   );
 };
 

@@ -25,23 +25,25 @@ services:
       context: ./backend
       dockerfile: Dockerfile
       target: deps
-    command: npm run start:dev
+    command: sh -c "while ! ping -c1 dev-db; do echo waiting for DB; sleep 1; done; npm run start:dev"
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
     env_file:
       - ./backend/.env
     ports:
-      - '3030:3030'
+      - "3001:3001"
     restart: unless-stopped
     networks:
       - backend
     depends_on:
-      - db
+      - dev-db
 
   dev-db:
     container_name: app-db
     image: postgres:14.0
+    env_file:
+      - ./backend/.env
     environment:
       POSTGRES_DB: ${DB_NAME-postgres}
       POSTGRES_USER: ${DB_USER-postgres}
