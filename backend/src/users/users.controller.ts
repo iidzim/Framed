@@ -28,11 +28,13 @@ export class UsersController {
 		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
 		// const user_token = await this.usersService.verifyAccessToken(token);
 		const user = await this.usersService.getUser(user_token.id);
-		const following = await this.followerService.getFollowing(user);
-		const followers = await this.followerService.getFollowers(user.id);
-		const posts = await this.postService.getUserPosts(user);
-		const profile = {user, following, followers, posts}
-		return profile;
+		const following = this.followerService.getFollowing(user);
+		const followers = this.followerService.getFollowers(user.id);
+		const posts = this.postService.getUserPosts(user);
+		Promise.all([following, followers, posts]).then((values) => {
+			const profile = {user, following, followers, posts}
+			return profile;
+		});
 	}
 
 	@Get('profile/:id')
