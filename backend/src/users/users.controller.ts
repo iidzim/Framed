@@ -25,22 +25,14 @@ export class UsersController {
 		@Req() req,
 		// @getUser() token,
 	): Promise<any> {
-		// console.log(req);
 		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
 		// const user_token = await this.usersService.verifyAccessToken(token);
 		const user = await this.usersService.getUser(user_token.id);
 		const following = await this.followerService.getFollowing(user);
 		const followers = await this.followerService.getFollowers(user.id);
 		const posts = await this.postService.getUserPosts(user);
-		Promise.all([following, followers, posts]).then(() => {
-			const profile = {
-				"user": user,
-				"following": following,
-				"followers": followers,
-				"posts": posts,
-			}
-			return profile;
-		});
+		const profile = {user, following, followers, posts}
+		return profile;
 	}
 
 	@Get('profile/:id')
@@ -52,12 +44,7 @@ export class UsersController {
 		const following = await this.followerService.getFollowing(user);
 		const followers = await this.followerService.getFollowers(user.id);
 		const posts = await this.postService.getUserPosts(user);
-		const profile = {
-			"user": user,
-			"following": following,
-			"followers": followers,
-			"posts": posts,
-		}
+		const profile = {user, following, followers, posts}
 		return profile;
 	}
 
@@ -71,16 +58,11 @@ export class UsersController {
 	): Promise<Profile> {
 		const user_token = await this.usersService.verifyAccessToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUser(user_token.id);
-		const { fullname, username, old_password, new_password, fileName } = editDto;
-		if (username != null || user.username !== username) {
-			await this.usersService.updateUsername(user, username);
-		}
-		if (fullname != null || user.fullname !== fullname) {
-		    await this.usersService.updateFullName(user.id, fullname);
-		}
-		if (old_password != null && new_password != null) {
-		    await this.usersService.updatePassword(user.username, old_password, new_password);
-		} //! remove
+		const { fileName } = editDto;
+
+		await this.usersService.updateUsername(user, editDto);
+		await this.usersService.updateFullName(user, editDto);
+		await this.usersService.updatePassword(user.username, editDto);
 		if (fileName != null) {
 			const avatarPath = process.cwd() + '/public/avatar/' + fileName;
 			fs.writeFileSync(avatarPath, avatar.buffer);

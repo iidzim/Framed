@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Injectable, Res, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -66,7 +66,7 @@ export class UsersService {
 	}
 
 	async register(
-		@Res({passthrough: true}) res: Response,
+		@Res({passthrough: true}) res,
 		profileDto: CreateProfileDto
 	): Promise<Profile> {
 		const user = await this.userRepository.signUp(profileDto);
@@ -114,11 +114,22 @@ export class UsersService {
 		await this.userRepository.update(id, { status: status });
 	}
 
-	async updateFullName(id: number, fullname: string) {
-		await this.userRepository.update(id, { fullname: fullname });
+	async updateFullName(
+		user: Profile,
+		@Body() editDto : EditProfileDto
+	): Promise<any> {
+		const { fullname } = editDto;
+		if (user.fullname !== fullname)
+			await this.userRepository.update(user.id, { fullname: fullname });
 	}
 
-	async updateUsername(user: Profile, username: string): Promise<Profile> {
+	async updateUsername(
+		user: Profile,
+		@Body() editDto : EditProfileDto
+	):Promise<Profile> {
+		const { username } = editDto;
+		if (user.username === username)
+			return user;
 		user.username = username;
 		try {
 			await user.save();
@@ -136,7 +147,11 @@ export class UsersService {
 		await this.userRepository.update(id, { avatar: avatar });
 	}
 
-	async updatePassword(username: string, old_password: string, new_password: string) {
+	async updatePassword(
+		username: string,
+		@Body() editDto : EditProfileDto
+	): Promise<any> {
+		const { old_password, new_password } = editDto;
 		if (old_password === new_password) {
 			throw new BadRequestException('New password must be different from old password !');
 		}
